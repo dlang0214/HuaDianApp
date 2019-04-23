@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#4682B4</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="head_bg">#663300</color>
+    <color name="blue">#33b5e5</color>
+    <color name="SkyBlue">#4876FF</color><!--天兰色 -->
+
+    <color name="deepgrey">#BEBEBE</color>
 </resources>

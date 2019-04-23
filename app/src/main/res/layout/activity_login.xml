@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/activity_login"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/main_page"
+    android:padding="4dp"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:id="@+id/login_message"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical">
+
+        <gordenyou.zhenxiong.View.SpinnerView
+            android:id="@+id/login_businesscode"
+            android:layout_width="match_parent"
+            android:layout_height="33dp"
+            android:layout_marginStart="131dp"
+            android:layout_marginEnd="62dp"
+            android:layout_marginTop="36dp"
+            android:shadowColor="#6495ED"
+            android:layout_marginLeft="131dp"
+            android:layout_marginRight="62dp" />
+
+        <EditText
+            android:id="@+id/login_user"
+            android:layout_width="match_parent"
+            android:layout_height="33dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="131dp"
+            android:layout_marginRight="62dp"
+            android:background="@drawable/edittextstyle"
+            android:layout_marginStart="131dp"
+            android:layout_marginEnd="62dp" />
+
+        <EditText
+            android:id="@+id/login_password"
+            android:layout_width="match_parent"
+            android:layout_height="33dp"
+            android:layout_marginLeft="131dp"
+            android:layout_marginRight="62dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/edittextstyle"
+            android:inputType="textPassword" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:layout_below="@id/login_message"
+        android:layout_marginTop="30dp"
+        android:orientation="vertical">
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="16dp"
+            android:layout_marginBottom="16dp"
+            android:id="@+id/login_checkbox"
+            android:layout_gravity="right"
+            android:gravity="center"
+            android:background="@drawable/butttonstyle"
+            android:text="保存登陆信息"
+            android:layout_marginEnd="16dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/login_login"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:background="@drawable/butttonstyle"
+                android:text="登陆" />
+
+            <Button
+                android:id="@+id/login_cancel"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:background="@drawable/butttonstyle"
+                android:text="取消" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/login_test"
+            android:layout_width="150dp"
+            android:layout_height="36dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/butttonstyle"
+            android:layout_gravity="center_horizontal"
+            android:text="测试" />
+        </LinearLayout>
+
+
+
+</RelativeLayout>

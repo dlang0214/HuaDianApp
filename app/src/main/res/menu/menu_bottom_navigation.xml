@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/item_plan"
+        android:icon="@drawable/ic_action_home"
+        android:title="任务" />
+    <item
+        android:id="@+id/item_message"
+        android:icon="@drawable/ic_action_comments"
+        android:title="信息" />
+    <item
+        android:id="@+id/item_post"
+        android:icon="@drawable/ic_action_post"
+        android:title="公告" />
+    <item
+        android:id="@+id/item_user"
+        android:icon="@drawable/ic_action_me"
+        android:title="用户" />
+
+</menu>
