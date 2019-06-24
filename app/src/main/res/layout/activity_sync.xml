@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <gordenyou.huadian.view.HeaderTitle
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:headertitle="数据同步"/>
+    <Button
+        android:id="@+id/sync_xiazai"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@drawable/butttonstyle"
+        android:layout_margin="20dp"
+        android:text="数据下载"
+        android:layout_gravity="center_vertical"
+        android:textSize="30dp"/>
+
+    <LinearLayout
+        android:id="@+id/linear_download"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="上次数据下载时间为："
+            android:textSize="20sp"/>
+        <TextView
+            android:id="@+id/time_down"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textSize="20sp"/>
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/sync_shangchuan"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@drawable/butttonstyle"
+        android:layout_margin="20dp"
+        android:text="数据上传"
+        android:layout_gravity="center_vertical"
+        android:textSize="30dp"/>
+
+    <LinearLayout
+        android:id="@+id/linear_upload"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="上次数据上传时间为："
+            android:textSize="20sp"/>
+        <TextView
+            android:id="@+id/time_upload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textSize="20sp"/>
+    </LinearLayout>
+
+</LinearLayout>

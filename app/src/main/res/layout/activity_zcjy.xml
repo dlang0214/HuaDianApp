@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <gordenyou.huadian.view.HeaderTitle
+        android:id="@+id/zcjy_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:headerbuttonname="完成借用"
+        app:headertitle="资产借用" />
+
+    <gordenyou.huadian.view.SpinnerView
+        android:id="@+id/zcjy_bumen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        app:spinnertitle="借用部门" />
+
+    <gordenyou.huadian.view.ScannerView
+        android:id="@+id/zcjy_tiaoma"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        app:scannerbuttonname="查询"
+        app:buttonvisable="false"
+        app:scannerhint="请扫描资产条码"
+        app:scannertitle="资产条码" />
+
+    <gordenyou.huadian.view.TextshowView
+        android:id="@+id/zcjy_mingchen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        app:textshowtitle="资产名称" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <gordenyou.huadian.view.TextshowView
+            android:id="@+id/zcjy_leixing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:layout_weight="1"
+            app:textshowtitle="资产类型" />
+
+        <!--<gordenyou.huadian.view.NumberView-->
+            <!--android:id="@+id/zcjy_shuliang"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_weight="1"-->
+            <!--android:layout_marginBottom="6dp"-->
+            <!--app:numberdefult="1"-->
+            <!--app:numberhint="请输入借用数量"-->
+            <!--app:numbertitle="借用数量" />-->
+    </LinearLayout>
+    <gordenyou.huadian.view.NumberView
+        android:id="@+id/zcjy_shuliang"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        app:numberdefult="1"
+        app:numberhint="请输入借用数量(默认为1)"
+        app:numbertitle="借用数量" />
+
+
+    <gordenyou.huadian.view.EdittextView
+        android:id="@+id/zcjy_cangku"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        app:edittexthint="请输入仓库"
+        app:edittexttitle="借用仓库" />
+
+    <gordenyou.huadian.view.ScannerView
+        android:id="@+id/zcjy_jieyongren"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:scannerhint="请输入借用人"
+        app:scannertitle="借  用  人"
+        app:scannerbuttonname="借用"/>
+
+    <LinearLayout
+        android:id="@+id/zcjy_linearlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorAccent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/colorPrimary"
+            android:text="借用单明细表" />
+
+        <tableLayout.FreeScrollView
+            android:layout_width="match_parent"
+            android:layout_height="240dp">
+
+            <tableLayout.TableLayout
+                android:id="@+id/zcjy_table"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                app:backgroundColorSelected="@color/colorAccent"
+                app:headerColor="@color/colorPrimary"
+                app:tableColumnPadding="8dp"
+                app:tableDividerColor="#ddd"
+                app:tableDividerSize="1dp"
+                app:tableRowHeight="30dp"
+                app:tableTextColor="#333"
+                app:tableTextColorSelected="#fff"
+                app:tableTextSize="14dp" />
+
+        </tableLayout.FreeScrollView>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorAccent" />
+    </LinearLayout>
+</LinearLayout>

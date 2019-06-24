@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <gordenyou.huadian.view.HeaderTitle
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:headerbuttonname="确认变更"
+        app:headertitle="资产变更" />
+
+    <gordenyou.huadian.view.ScannerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:scannerbuttonname="扫描"
+        app:scannerhint="请扫描条码"
+        app:scannertitle="扫描条码" />
+
+    <gordenyou.huadian.view.TextshowView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:textshowtitle="E     P    C" />
+
+    <gordenyou.huadian.view.TextshowView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:textshowtitle="资产名称" />
+
+    <gordenyou.huadian.view.TextshowView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:textshowtitle="资产品牌" />
+
+    <gordenyou.huadian.view.TextshowView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:textshowtitle="资产型号" />
+
+    <gordenyou.huadian.view.TextshowView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:textshowtitle="出厂编码" />
+
+    <gordenyou.huadian.view.TextshowView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:textshowtitle="资产备注" />
+
+    <gordenyou.huadian.view.TextshowView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:textshowtitle="所属部门" />
+
+    <gordenyou.huadian.view.TextshowView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:textshowtitle="所在区域" />
+
+    <gordenyou.huadian.view.EdittextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        app:edittexthint="请输入新的品牌"
+        app:edittexttitle="更改品牌" />
+
+    <gordenyou.huadian.view.EdittextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        app:edittexthint="请输入新的型号"
+        app:edittexttitle="更改型号" />
+
+    <gordenyou.huadian.view.EdittextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        app:edittexthint="请输入新的出厂编码"
+        app:edittexttitle="更改编码" />
+
+    <gordenyou.huadian.view.EdittextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        app:edittexthint="请输入新的备注"
+        app:edittexttitle="更改备注" />
+
+    <gordenyou.huadian.view.EdittextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        app:edittexthint="请输入新的部门"
+        app:edittexttitle="更改部门" />
+
+    <gordenyou.huadian.view.EdittextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="3dp"
+        app:edittexthint="请输入新的区域"
+        app:edittexttitle="更改区域" />
+
+    <!--<Button-->
+    <!--android:layout_width="300dp"-->
+    <!--android:layout_height="36dp"-->
+    <!--android:layout_marginTop="80dp"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:text="确  认  变  更"-->
+    <!--android:background="@drawable/butttonstyle"/>-->
+</LinearLayout>

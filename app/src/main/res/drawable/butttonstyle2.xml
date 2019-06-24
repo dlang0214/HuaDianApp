@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 连框颜色值 -->
+    <item>
+        <shape>
+            <solid android:color="@color/colorPrimary" />
+            <corners android:radius="6dp" />
+
+        </shape>
+    </item>
+    <!-- 主体背景颜色值 -->
+    <item
+        android:bottom="1dp"
+        android:left="1dp"
+        android:right="1dp"
+        android:top="1dp">
+        <shape>
+
+            <stroke
+                android:angle="90"
+                android:centerColor="@color/colorPrimary"
+                android:centerX="0.5"
+                android:centerY="0.5"
+
+                android:type="linear" />
+
+            <padding
+                android:bottom="2dp"
+                android:left="2dp"
+                android:right="2dp"
+                android:top="2dp" />
+            <!-- 应该是圆角 -->
+            <corners android:radius="6dp" />
+        </shape>
+    </item>
+
+    <item>
+        <selector>
+            <item android:state_pressed="true">
+                <color android:color="@color/head_bg" />
+            </item>
+        </selector>
+    </item>
+</layer-list>

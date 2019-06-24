@@ -19,9 +19,12 @@
     <declare-styleable name="NumberView">
         <attr name="numbertitle" format="string"/>
         <attr name="numberhint" format="string"/>
+        <attr name="numberdefult" format="string"/>
     </declare-styleable>
     <declare-styleable name="HeaderTitle">
         <attr name="headertitle" format="string"/>
+        <attr name="headerbuttonname" format="string"/>
+        <attr name="headerbuttonvisable" format="boolean"/>
     </declare-styleable>
 
     <!--tablelayout-->

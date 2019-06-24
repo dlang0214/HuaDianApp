@@ -4,10 +4,9 @@
     android:id="@+id/activity_system"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
     android:orientation="vertical">
 
-    <gordenyou.zhenxiong.View.HeaderTitle
+    <gordenyou.huadian.view.HeaderTitle
         app:headertitle="震雄WMS——配置信息"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

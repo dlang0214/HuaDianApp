@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "p.gordenyou.huadian"
+        applicationId "gordenyou.huadian"
         minSdkVersion 16
         targetSdkVersion 27
         versionCode 1
@@ -16,6 +16,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+            assets.srcDirs = ['src/main/assets', 'src/main/assets/']
+        }
+    }
 }
 
 dependencies {
@@ -26,7 +32,10 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
     implementation files('libs/core-2.3.0.jar')
+    implementation files('libs/ksoap2-android-assembly-3.0.0-jar-with-dependencies.jar')
     implementation 'com.android.support:design:27.1.1'
+    implementation 'com.mobsandgeeks:android-saripaar:2.0.3'
 }

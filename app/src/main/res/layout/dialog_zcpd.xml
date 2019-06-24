@@ -1,0 +1,113 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <gordenyou.huadian.view.HeaderTitle
+        android:id="@+id/dlzcpd_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:headerbuttonname="确认调整"
+        app:headertitle="差异调整" />
+
+    <gordenyou.huadian.view.TextshowView
+        android:id="@+id/dlzcpd_tiama"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:textshowtitle="资产条码" />
+
+    <gordenyou.huadian.view.TextshowView
+        android:id="@+id/dlzcpd_mingcheng"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:textshowtitle="资产名称" />
+    <!--<gordenyou.huadian.view.TextshowView-->
+    <!--android:id="@+id/dlzcpd_xinghao"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginBottom="6dp"-->
+    <!--app:textshowtitle="资产型号"/>-->
+    <gordenyou.huadian.view.TextshowView
+        android:id="@+id/dlzcpd_chengben"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:textshowtitle="成本中心" />
+
+    <gordenyou.huadian.view.TextshowView
+        android:id="@+id/dlzcpd_quyu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:textshowtitle="所在区域" />
+
+    <gordenyou.huadian.view.TextshowView
+        android:id="@+id/dlzcpd_fangjian"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:textshowtitle="所在房间" />
+
+    <gordenyou.huadian.view.TextshowView
+        android:id="@+id/dlzcpd_shiyongren"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:textshowtitle="使  用  人" />
+
+    <gordenyou.huadian.view.TextshowView
+        android:id="@+id/dlzcpd_fuzeren"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        app:textshowtitle="负  责  人" />
+    <!--<gordenyou.huadian.view.EdittextView-->
+    <!--android:id="@+id/dlzcpd_xingongsi"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginBottom="6dp"-->
+    <!--app:edittexttitle="更改公司"/>-->
+    <gordenyou.huadian.view.SpinnerView
+        android:id="@+id/dlzcpd_xinchengben"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        app:spinnertitle="新成本中心" />
+
+    <gordenyou.huadian.view.EdittextView
+        android:id="@+id/dlzcpd_xinquyu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        app:edittexthint="请输入新的区域"
+        app:edittexttitle="更改区域" />
+
+    <gordenyou.huadian.view.EdittextView
+        android:id="@+id/dlzcpd_xinfangjian"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        app:edittexthint="请输入新的房间"
+        app:edittexttitle="更改房间" />
+
+    <gordenyou.huadian.view.EdittextView
+        android:id="@+id/dlzcpd_xinshiyongren"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        app:edittexthint="请输入新的使用人"
+        app:edittexttitle="新使用人" />
+
+    <gordenyou.huadian.view.EdittextView
+        android:id="@+id/dlzcpd_xinbeizhu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        app:edittexthint="请输入新的备注"
+        app:edittexttitle="更改备注" />
+
+    <!--<gordenyou.huadian.view.EdittextView-->
+    <!--android:id="@+id/dlzcpd_xinfuzeren"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--app:edittexttitle="新负责人"/>-->
+
+</LinearLayout>

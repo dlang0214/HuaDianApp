@@ -6,7 +6,7 @@
     android:background="@drawable/background"
     android:orientation="vertical">
 
-    <gordenyou.zhenxiong.View.HeaderTitle
+    <gordenyou.huadian.view.HeaderTitle
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:headertitle="震雄WMS——用户信息" />
@@ -18,35 +18,35 @@
         android:layout_weight="7"
         android:orientation="vertical">
 
-        <gordenyou.zhenxiong.View.TextshowView
+        <gordenyou.huadian.view.TextshowView
             android:id="@+id/user_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             app:textshowtitle="用  户   名：" />
 
-        <gordenyou.zhenxiong.View.TextshowView
+        <gordenyou.huadian.view.TextshowView
             android:id="@+id/user_id"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             app:textshowtitle="用  户   ID：" />
 
-        <gordenyou.zhenxiong.View.TextshowView
+        <gordenyou.huadian.view.TextshowView
             android:id="@+id/user_department"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             app:textshowtitle="用户部门：" />
 
-        <gordenyou.zhenxiong.View.TextshowView
+        <gordenyou.huadian.view.TextshowView
             android:id="@+id/user_organization"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             app:textshowtitle="组织机构：" />
 
-        <gordenyou.zhenxiong.View.SpinnerView
+        <gordenyou.huadian.view.SpinnerView
             android:id="@+id/user_companycode"
             android:layout_width="match_parent"
             android:layout_height="36dp"

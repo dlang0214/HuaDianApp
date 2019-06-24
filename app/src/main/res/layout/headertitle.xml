@@ -1,15 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@color/colorPrimary"
+    android:layout_marginBottom="8dp">
 
+    <Button
+        android:id="@+id/header_leftbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="38dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_gravity="bottom"
+        android:gravity="start|center_vertical"
+        android:background="@drawable/butttonstyle2"
+        android:textColor="#ffffff"
+        android:text="   返回" />
     <TextView
         android:id="@+id/header_title"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/colorPrimary"
-        android:gravity="left|center"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:gravity="center"
+        android:layout_centerInParent="true"
         android:text="header"
         android:textColor="#ffffff"
-        android:textSize="20sp" />
-</LinearLayout>
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/header_rightbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="38dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="bottom"
+        android:background="@drawable/butttonstyle2"
+        android:textColor="#ffffff"
+        android:text="zishi" />
+</RelativeLayout>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <gordenyou.huadian.view.HeaderTitle
+        android:id="@+id/rfid_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:headerbuttonname="绑定RFID"
+        app:headertitle="资产RFID绑定" />
+
+    <!--<gordenyou.huadian.view.SpinnerView-->
+        <!--android:id="@+id/rfid_spinner"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginBottom="12dp"-->
+        <!--app:spinnertitle="公司代码" />-->
+
+    <gordenyou.huadian.view.ScannerView
+        android:id="@+id/rfid_bianma"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        app:scannerbuttonname="查找"
+        app:scannerhint="请输入资产编码"
+        app:scannertitle="资产编码" />
+
+    <gordenyou.huadian.view.TextshowView
+        android:id="@+id/rfid_mingchen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        app:textshowtitle="资产名称" />
+
+    <gordenyou.huadian.view.TextshowView
+        android:id="@+id/rfid_leixin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        app:textshowtitle="资产型号" />
+
+    <!--<gordenyou.huadian.view.TextshowView-->
+        <!--android:id="@+id/rfid_pingpai"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginBottom="3dp"-->
+        <!--app:edittexthint="请输入资产品牌"-->
+        <!--app:textshowtitle="资产品牌：" />-->
+
+    <gordenyou.huadian.view.TextshowView
+        android:id="@+id/rfid_bumen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        app:textshowtitle="所属部门" />
+
+    <gordenyou.huadian.view.TextshowView
+        android:id="@+id/rfid_quyu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        app:textshowtitle="所属区域" />
+
+    <gordenyou.huadian.view.TextshowView
+        android:id="@+id/rfid_zerenren"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        app:textshowtitle="责  任  人" />
+
+    <gordenyou.huadian.view.TextshowView
+        android:id="@+id/rfid_suoyouren"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        app:textshowtitle="所  有  人" />
+
+    <gordenyou.huadian.view.TextshowView
+        android:id="@+id/rfid_chuchang"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        app:textshowtitle="出厂编码" />
+
+    <gordenyou.huadian.view.TextshowView
+        android:id="@+id/rfid_beizhu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        app:textshowtitle="备        注" />
+
+    <gordenyou.huadian.view.ScannerView
+        android:id="@+id/rfid_EPC"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        app:scannerbuttonname="读取"
+        app:scannerhint="请输入或读取RFID"
+        app:scannertitle="RFID编号" />
+    <!--<Button-->
+    <!--android:layout_width="300dp"-->
+    <!--android:layout_height="36dp"-->
+    <!--android:layout_marginTop="10dp"-->
+    <!--android:layout_gravity="center"-->
+    <!--android:text="绑定RFID"-->
+    <!--android:background="@drawable/butttonstyle"/>-->
+</LinearLayout>

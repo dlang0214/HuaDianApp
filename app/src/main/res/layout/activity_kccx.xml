@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <gordenyou.huadian.view.HeaderTitle
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:headerbuttonvisable="false"
+        app:headertitle="库存查询" />
+
+    <gordenyou.huadian.view.ScannerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:scannerbuttonname="扫描"
+        app:scannerhint="请扫描资产条码"
+        app:scannertitle="资产条码" />
+
+    <gordenyou.huadian.view.TextshowView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:textshowtitle="资产名称" />
+
+    <gordenyou.huadian.view.TextshowView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:textshowtitle="资产分类" />
+
+    <gordenyou.huadian.view.TextshowView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:textshowtitle="所属部门" />
+
+    <gordenyou.huadian.view.TextshowView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:textshowtitle="所在区域" />
+
+    <gordenyou.huadian.view.TextshowView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:textshowtitle="资产备注" />
+
+    <gordenyou.huadian.view.TextshowView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:textshowtitle="当前状态" />
+</LinearLayout>
