@@ -28,6 +28,7 @@ import com.mobsandgeeks.saripaar.Validator;
 import org.ksoap2.serialization.SoapObject;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -186,6 +187,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Validato
 
     public void addList(String value){
         Set<String> changelist = getSetValues("changelist");
+        changelist = new HashSet<>();
         changelist.add(value);
         SetValues("changelist", changelist);
     }

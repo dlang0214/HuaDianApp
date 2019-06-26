@@ -74,7 +74,7 @@ public class Activity_ZCJY extends BaseActivity {
         jieyongren.getButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                str_bumen = bumen.getText();
+                str_bumen = bumen.getName();
                 if (str_bumen.equals("")) {
                     ShowErrMsgDialog("请选择部门！");
                 } else {
@@ -125,7 +125,7 @@ public class Activity_ZCJY extends BaseActivity {
                 ContentValues contentValues = new ContentValues();
                 contentValues.put("BorrowListID", BorrowID);
                 contentValues.put("Borrowman", temp[0]);
-                contentValues.put("DeptID", temp[1]);
+                contentValues.put("DeptName", temp[1]);
                 contentValues.put("AssetID", temp[2]);
                 contentValues.put("MaterielName", temp[3]);
                 contentValues.put("MaterielKind", temp[4]);
@@ -139,10 +139,6 @@ public class Activity_ZCJY extends BaseActivity {
                 }
             }
             sqLiteDatabase.setTransactionSuccessful();
-        } catch (Exception e) {
-            ShowErrMsgDialog(e.getMessage());
-        } finally {
-            sqLiteDatabase.endTransaction();
             SetValues("AssetBorrowList", BorrowListDetail);
             SetValues("AssetBorrowListDetail", ListDetail);
             ClearData();
@@ -151,6 +147,12 @@ public class Activity_ZCJY extends BaseActivity {
             leixing.SetText("");
             jieyongren.SetText("");
             addList("AssetBorrowListDetail");
+            ShowWarmMsgDialog("借用成功！");
+        } catch (Exception e) {
+            ShowErrMsgDialog(e.getMessage());
+        } finally {
+            sqLiteDatabase.endTransaction();
+
         }
     }
 
@@ -158,7 +160,7 @@ public class Activity_ZCJY extends BaseActivity {
         BorrowID = "ABL" + CommonMethod.getListTime();
         ContentValues contentValues = new ContentValues();
         contentValues.put("BorrowListID", BorrowID);
-        contentValues.put("UserID", UserInfo.USERID);
+        contentValues.put("UserName", UserInfo.USERNAME);
         contentValues.put("EditDate", CommonMethod.getTime());
         if (sqLiteDatabase.insertOrThrow("AssetBorrowList", null, contentValues) != -1) {
             ListDetail.add(BorrowID);
@@ -171,7 +173,9 @@ public class Activity_ZCJY extends BaseActivity {
         dbhelper = new MySQLiteOpenHelper(getBaseContext(), "temp_data.db", null, 1);
         sqLiteDatabase = dbhelper.getWritableDatabase();
         ListDetail = getSetValues("AssetBorrowList");
+        ListDetail = new HashSet<>();
         BorrowListDetail = getSetValues("AssetBorrowListDetail");
+        BorrowListDetail = new HashSet<>();
     }
 
     @Override

@@ -160,10 +160,8 @@ public class Activity_SYNC extends BaseActivity implements View.OnClickListener 
                     publishProgress(progress);
                 }
                 sqLiteDatabase.setTransactionSuccessful();
-
-                //Toast.makeText(getBaseContext(), "数据库导入成功！", Toast.LENGTH_SHORT).show();
             } catch (JSONException e) {
-                e.printStackTrace();
+                cancel(true);
             } finally {
                 sqLiteDatabase.endTransaction();
             }
@@ -187,6 +185,13 @@ public class Activity_SYNC extends BaseActivity implements View.OnClickListener 
             WebParams.SetSubOperationFunction("DownloadList_Gorden");
             WebParams.Setparam1("rCheckInfo");
             WebHttpRequest(2);
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            dialog.dismiss();
+            ShowErrMsgDialog("CheckListInfo下载数据出错，请联系管理员！");
         }
     }
 
@@ -214,7 +219,8 @@ public class Activity_SYNC extends BaseActivity implements View.OnClickListener 
 
                 //Toast.makeText(getBaseContext(), "数据库导入成功！", Toast.LENGTH_SHORT).show();
             } catch (JSONException e) {
-                e.printStackTrace();
+
+                cancel(true);
             } finally {
                 sqLiteDatabase.endTransaction();
             }
@@ -238,6 +244,13 @@ public class Activity_SYNC extends BaseActivity implements View.OnClickListener 
             WebParams.SetSubOperationFunction("DownloadList_Gorden");
             WebParams.Setparam1("DeptInfo");
             WebHttpRequest(3);
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            dialog.dismiss();
+            ShowErrMsgDialog("CheckInfo下载数据出错，请联系管理员！");
         }
     }
 
@@ -264,7 +277,8 @@ public class Activity_SYNC extends BaseActivity implements View.OnClickListener 
                 sqLiteDatabase.setTransactionSuccessful();
                 //Toast.makeText(getBaseContext(), "数据库导入成功！", Toast.LENGTH_SHORT).show();
             } catch (JSONException e) {
-                e.printStackTrace();
+
+                cancel(true);
             } finally {
                 sqLiteDatabase.endTransaction();
             }
@@ -288,6 +302,13 @@ public class Activity_SYNC extends BaseActivity implements View.OnClickListener 
             WebParams.SetSubOperationFunction("DownloadList_Gorden");
             WebParams.Setparam1("Workuser");
             WebHttpRequest(4);
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            dialog.dismiss();
+            ShowErrMsgDialog("DeptInfo下载数据出错，请联系管理员！");
         }
     }
 
@@ -320,7 +341,8 @@ public class Activity_SYNC extends BaseActivity implements View.OnClickListener 
                 sqLiteDatabase.setTransactionSuccessful();
                 //Toast.makeText(getBaseContext(), "数据库导入成功！", Toast.LENGTH_SHORT).show();
             } catch (JSONException e) {
-                e.printStackTrace();
+
+                cancel(true);
             } finally {
                 sqLiteDatabase.endTransaction();
             }
@@ -344,6 +366,13 @@ public class Activity_SYNC extends BaseActivity implements View.OnClickListener 
             WebParams.SetSubOperationFunction("DownloadList_Gorden");
             WebParams.Setparam1("rMaterielInfo");
             WebHttpRequest(5);
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            dialog.dismiss();
+            ShowErrMsgDialog("Workuser表下载数据出错，请联系管理员！");
         }
     }
 
@@ -413,7 +442,8 @@ public class Activity_SYNC extends BaseActivity implements View.OnClickListener 
                 sqLiteDatabase.setTransactionSuccessful();
                 //Toast.makeText(getBaseContext(), "数据库导入成功！", Toast.LENGTH_SHORT).show();
             } catch (JSONException e) {
-                e.printStackTrace();
+
+                cancel(true);
             } finally {
                 sqLiteDatabase.endTransaction();
             }
@@ -424,7 +454,6 @@ public class Activity_SYNC extends BaseActivity implements View.OnClickListener 
         @Override
         protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
-
             mProgressBar.setProgress(values[0]);
             jindu.setText(String.valueOf(values[0]));
             //Log.e("updateThread", "id:" + Thread.currentThread().getId() + " name:" + Thread.currentThread().getName());//这里是UI主线程
@@ -438,6 +467,13 @@ public class Activity_SYNC extends BaseActivity implements View.OnClickListener 
             WebParams.Setparam1("AssetBorrowList");
             WebHttpRequest(6);
         }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            dialog.dismiss();
+            ShowErrMsgDialog("rMaterielInfo表下载数据出错，请联系管理员！");
+        }
     }
 
     private class AssetBorrowListAsync extends AsyncTask<String, Integer, Void> {
@@ -450,7 +486,7 @@ public class Activity_SYNC extends BaseActivity implements View.OnClickListener 
                     ContentValues values = new ContentValues();
                     values.put("BorrowListID", jsonArray.optJSONObject(j).getString("BorrowListID"));
                     values.put("PlanDate", jsonArray.optJSONObject(j).getString("PlanDate"));
-                    values.put("UserName", jsonArray.optJSONObject(j).getString("UserID"));
+                    values.put("UserName", jsonArray.optJSONObject(j).getString("UserName"));
                     values.put("EditDate", jsonArray.optJSONObject(j).getString("EditDate"));
                     values.put("State", jsonArray.optJSONObject(j).getString("State"));
                     sqLiteDatabase.insertOrThrow("AssetBorrowList", null, values);
@@ -460,7 +496,8 @@ public class Activity_SYNC extends BaseActivity implements View.OnClickListener 
                 sqLiteDatabase.setTransactionSuccessful();
                 //Toast.makeText(getBaseContext(), "数据库导入成功！", Toast.LENGTH_SHORT).show();
             } catch (JSONException e) {
-                e.printStackTrace();
+
+                cancel(true);
             } finally {
                 sqLiteDatabase.endTransaction();
             }
@@ -485,6 +522,13 @@ public class Activity_SYNC extends BaseActivity implements View.OnClickListener 
             WebParams.Setparam1("AssetBorrowListDetail");
             WebHttpRequest(7);
         }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            dialog.dismiss();
+            ShowErrMsgDialog("AssetBorrowList表下载数据出错，请联系管理员！");
+        }
     }
 
     private class AssetBorrwoListDetialAsync extends AsyncTask<String, Integer, Void> {
@@ -501,10 +545,10 @@ public class Activity_SYNC extends BaseActivity implements View.OnClickListener 
                     values.put("MaterielKind", jsonArray.optJSONObject(j).getString("MaterielKind"));
                     values.put("PlanDate", jsonArray.optJSONObject(j).getString("PlanDate"));
                     values.put("UnitID", jsonArray.optJSONObject(j).getString("UnitID"));
-                    values.put("DeptID", jsonArray.optJSONObject(j).getString("DeptID"));
+                    values.put("DeptName", jsonArray.optJSONObject(j).getString("DeptName"));
                     values.put("area", jsonArray.optJSONObject(j).getString("area"));
                     values.put("Borrowman", jsonArray.optJSONObject(j).getString("Borrowman"));
-                    values.put("UserName", jsonArray.optJSONObject(j).getString("UserID"));
+                    values.put("UserName", jsonArray.optJSONObject(j).getString("UserName"));
                     values.put("BorrowType", jsonArray.optJSONObject(j).getString("BorrowType"));
                     values.put("StockID", jsonArray.optJSONObject(j).getString("StockID"));
                     values.put("EditDate", jsonArray.optJSONObject(j).getString("EditDate"));
@@ -517,7 +561,8 @@ public class Activity_SYNC extends BaseActivity implements View.OnClickListener 
                 sqLiteDatabase.setTransactionSuccessful();
                 //Toast.makeText(getBaseContext(), "数据库导入成功！", Toast.LENGTH_SHORT).show();
             } catch (JSONException e) {
-                e.printStackTrace();
+
+                cancel(true);
             } finally {
                 sqLiteDatabase.endTransaction();
             }
@@ -542,6 +587,13 @@ public class Activity_SYNC extends BaseActivity implements View.OnClickListener 
             WebParams.Setparam1("AssetReturnDetail");
             WebHttpRequest(8);
         }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            dialog.dismiss();
+            ShowErrMsgDialog("AssetBorrowListDetail表下载数据出错，请联系管理员！");
+        }
     }
 
     private class AssetReturnDetailAsync extends AsyncTask<String, Integer, Void> {
@@ -554,13 +606,15 @@ public class Activity_SYNC extends BaseActivity implements View.OnClickListener 
                     ContentValues values = new ContentValues();
                     values.put("BorrowListID", jsonArray.optJSONObject(j).getString("BorrowListID"));
                     values.put("AssetID", jsonArray.optJSONObject(j).getString("AssetID"));
+                    values.put("MaterielName", jsonArray.optJSONObject(j).getString("MaterielName"));
+                    values.put("MaterielKind", jsonArray.optJSONObject(j).getString("MaterielKind"));
                     values.put("ReturnNum", jsonArray.optJSONObject(j).getString("ReturnNum"));
                     values.put("Returnman", jsonArray.optJSONObject(j).getString("Returnman"));
                     values.put("ReturnDate", jsonArray.optJSONObject(j).getString("ReturnDate"));
                     values.put("UnitID", jsonArray.optJSONObject(j).getString("UnitID"));
                     values.put("Borrowman", jsonArray.optJSONObject(j).getString("Borrowman"));
-                    values.put("DeptID", jsonArray.optJSONObject(j).getString("DeptID"));
-                    values.put("UserName", jsonArray.optJSONObject(j).getString("UserID"));
+                    values.put("DeptName", jsonArray.optJSONObject(j).getString("DeptName"));
+                    values.put("UserName", jsonArray.optJSONObject(j).getString("UserName"));
                     values.put("ReturnType", jsonArray.optJSONObject(j).getString("ReturnType"));
                     values.put("StockID", jsonArray.optJSONObject(j).getString("StockID"));
                     values.put("EditDate", jsonArray.optJSONObject(j).getString("EditDate"));
@@ -573,7 +627,7 @@ public class Activity_SYNC extends BaseActivity implements View.OnClickListener 
                 SaveSharePreferences();
                 //Toast.makeText(getBaseContext(), "数据库导入成功！", Toast.LENGTH_SHORT).show();
             } catch (JSONException e) {
-                e.printStackTrace();
+                cancel(true);
             } finally {
                 sqLiteDatabase.endTransaction();
             }
@@ -584,7 +638,6 @@ public class Activity_SYNC extends BaseActivity implements View.OnClickListener 
         @Override
         protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
-
             mProgressBar.setProgress(values[0]);
             jindu.setText(String.valueOf(values[0]));
             //Log.e("updateThread", "id:" + Thread.currentThread().getId() + " name:" + Thread.currentThread().getName());//这里是UI主线程
@@ -596,6 +649,13 @@ public class Activity_SYNC extends BaseActivity implements View.OnClickListener 
             dialog.dismiss();
             ShowWarmMsgDialog("下载完成");
             SetTime("time_download", linear_download, time_download);
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            dialog.dismiss();
+            ShowErrMsgDialog("AssetReturnDetail表下载数据出错，请联系管理员！");
         }
     }
 
@@ -633,45 +693,50 @@ public class Activity_SYNC extends BaseActivity implements View.OnClickListener 
     }
 
     private void getDataUpload() {
-        WebParams.Clear();
-        WebParams.SetSubOperationFunction("UploadListInfo_Gorden");
-        WebParams.Setparam1(getChecklistInfo());
+        Set<String> changelist = getSetValues("changelist");
+        for(String list : changelist){
+            switch(list){
+                case "AssetBorrowListDetail":
+                    WebParams.Clear();
+                    WebParams.SetSubOperationFunction("UploadListInfo_Gorden");
+                    WebParams.Setparam1(list);
+                    WebParams.Setparam2(getAssetBorrowListDetialInfo());
+                    WebHttpRequest(11);
+            }
+        }
         //ProgressDialogShow(this, "同步中...", "请等待！");
-        WebHttpRequest(3);
+
     }
 
-    private String getChecklistInfo() {
-        Cursor cursor = sqLiteDatabase.query("rCheckListInfo", new String[]{"AssetID"
-                        , "NewCompanyCode", "NewCostCenter", "NewLocation", "NewUser", "newresmancode", "AcqDate", "flags", "newroom"
-                        , "newsn", "newremark", "newbrand", "newmodel"},
-                "flags != ?", new String[]{"0"}, null, null, null);
+    private String getAssetBorrowListDetialInfo() {
+        dbhelper = new MySQLiteOpenHelper(getBaseContext(), "temp_data.db", null, 1);
+        sqLiteDatabase = dbhelper.getWritableDatabase();
+        Set<String> borrowListDetail = getSetValues("AssetBorrowListDetail");
+        StringBuilder list = new StringBuilder();
+        for(String listID : borrowListDetail) {
+            Cursor cursor = sqLiteDatabase.rawQuery("select * from AssetBorrowListDetail where BorrowListID = '" + listID + "'", null);
+            String[] values = new String[]{"BorrowListID", "Borrowman", "DeptName", "AssetID", "MaterielName", "MaterielKind", "BorrowNum", "BorrowType", "UserName", "EditDate", "State"};
 
-        String list = "";
-        int i = 0;
-        while (cursor.moveToNext()) {
-            String id = cursor.getString(cursor.getColumnIndex("AssetID"));
-            String code = cursor.getString(cursor.getColumnIndex("NewCompanyCode"));
-            String center = cursor.getString(cursor.getColumnIndex("NewCostCenter"));
-            String location = cursor.getString(cursor.getColumnIndex("NewLocation"));
-            String user = cursor.getString(cursor.getColumnIndex("NewUser"));
-            String newresmancode = cursor.getString(cursor.getColumnIndex("newresmancode"));
-            String acqDate = cursor.getString(cursor.getColumnIndex("AcqDate"));
-            String flags = cursor.getString(cursor.getColumnIndex("flags"));
-            String newroom = cursor.getString(cursor.getColumnIndex("newroom"));
-            String newsn = cursor.getString(cursor.getColumnIndex("newsn"));
-            String newremark = cursor.getString(cursor.getColumnIndex("newremark"));
-            String newbrand = cursor.getString(cursor.getColumnIndex("newbrand"));
-            String newmode = cursor.getString(cursor.getColumnIndex("newmodel"));
-            String temp = id + "○" + code + "○" + center + "○" + location + "○" + user + "○" + newresmancode + "○" + acqDate + "○"
-                    + flags + "○" + newroom + "○" + newsn + "○" + newremark + "○" + newbrand + "○" + newmode;
-            if (list.isEmpty()) {
-                list += temp;
-            } else {
-                list += "$" + temp;
+            while (cursor.moveToNext()) {
+                StringBuilder temp = new StringBuilder();
+                int j = 1;
+                for (String i : values) {
+                    if (j != values.length) {
+                        temp.append(cursor.getString(cursor.getColumnIndex(i))).append("○");
+                    } else {
+                        temp.append(cursor.getString(cursor.getColumnIndex(i)));
+                    }
+                    j++;
+                }
+                if (list.length() == 0) {
+                    list.append(temp);
+                } else {
+                    list.append("$").append(temp);
+                }
             }
-            i++;
+            cursor.close();
         }
-        return list;
+        return list.toString();
     }
 
     private void getDataDownload() {

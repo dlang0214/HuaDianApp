@@ -142,9 +142,9 @@ public class Activity_ZCPD extends BaseActivity implements View.OnClickListener 
                         radiogroup.setVisibility(View.GONE);
                         yema.setVisibility(View.GONE);
                         yemasum.setVisibility(View.GONE);
-                        GetCostCenterInfo(getBaseContext(), sqLiteDatabase, danhao.getText(), chengben);
+                        GetCostCenterInfo(getBaseContext(), sqLiteDatabase, danhao.getID(), chengben);
                         preselectid = i;
-                        str_danhao = danhao.getText();
+                        str_danhao = danhao.getID();
                     } else {
                         new AlertDialog.Builder(Activity_ZCPD.this).setTitle("提示信息")
                                 .setMessage("有盘点信息未确认盘点，选择新盘点单将会清空盘点信息。确认清除？").setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -157,9 +157,9 @@ public class Activity_ZCPD extends BaseActivity implements View.OnClickListener 
                                 radiogroup.setVisibility(View.GONE);
                                 yema.setVisibility(View.GONE);
                                 yemasum.setVisibility(View.GONE);
-                                GetCostCenterInfo(getBaseContext(), sqLiteDatabase, danhao.getText(), chengben);
+                                GetCostCenterInfo(getBaseContext(), sqLiteDatabase, danhao.getID(), chengben);
                                 preselectid = i;
-                                str_danhao = danhao.getText();
+                                str_danhao = danhao.getID();
                             }
                         }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
                             @Override
@@ -226,7 +226,7 @@ public class Activity_ZCPD extends BaseActivity implements View.OnClickListener 
         header.getRightbutton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String str_chengben = xinchengben.getText();
+                String str_chengben = xinchengben.getID();
                 String str_quyu = xinquyu.getText();
                 String str_fangjian = xinfangjian.getText();
                 String str_beizhu = xinbeizhu.getText();
@@ -292,11 +292,11 @@ public class Activity_ZCPD extends BaseActivity implements View.OnClickListener 
     }
 
     private void GetScreenData() {
-        stdanhao = danhao.getText();
+        stdanhao = danhao.getID();
         if (chengben.getSpinner().getSelectedItemId() == 0) {
             stchengben = "";
         } else {
-            stchengben = chengben.getText();
+            stchengben = chengben.getID();
         }
         stquyu = quyu.getText();
         stfangjian = fangjain.getText();

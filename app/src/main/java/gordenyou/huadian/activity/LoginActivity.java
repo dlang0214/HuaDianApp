@@ -195,6 +195,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             if (cursor.getCount() == 1) {
                 cursor.moveToNext();
                 UserInfo.USERID = cursor.getString(cursor.getColumnIndex("UserID"));
+                UserInfo.USERNAME = cursor.getString(cursor.getColumnIndex("UserName"));
                 Intent intent = new Intent(this, HomeActivity.class);
                 startActivity(intent);
             } else {

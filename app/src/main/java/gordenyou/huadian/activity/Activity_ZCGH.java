@@ -1,5 +1,6 @@
 package gordenyou.huadian.activity;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -12,7 +13,9 @@ import java.util.Set;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import gordenyou.huadian.R;
+import gordenyou.huadian.common.CommonMethod;
 import gordenyou.huadian.common.MySQLiteOpenHelper;
+import gordenyou.huadian.util.UserInfo;
 import gordenyou.huadian.view.HeaderTitle;
 import gordenyou.huadian.view.NumberView;
 import gordenyou.huadian.view.ScannerView;
@@ -41,14 +44,16 @@ public class Activity_ZCGH extends BaseActivity {
 
     MySQLiteOpenHelper dbhelper;
     SQLiteDatabase sqLiteDatabase;
-    Set<String> listDetail;
-    Set<String> checklist = new HashSet<>();
+    Set<String> listDetail = new HashSet<>();  //记录变化的单据
+    Set<String> checklist = new HashSet<>();//记录当前表格中的条码
 
-    ArrayList<String> temp_jieyonglist;
-    ArrayList<String> temp_guihuanlist;
+    ArrayList<String> temp_jieyonglist = new ArrayList<>();
+    ArrayList<String> temp_guihuanlist = new ArrayList<>();
 
-    String[] list_header = {"借用人", "借用部门", "资产条码", "资产名称", "资产类型", "借用数量", "借用类型", "记录人", "借用时间"};
-    String[] list_header1 = {"归还人", "借用单据", "资产条码", "资产名称", "归还数量", "借用部门", "归还时间"};
+    String all_bumen, all_mingchen, all_leixing, all_jieyongren;
+
+    String[] list_header = {"借用人", "借用部门", "借用单号", "资产条码", "资产名称", "资产类型", "借用数量", "借用类型", "记录人", "借用时间"};
+    String[] list_header1 = {"归还人", "借用单号", "资产条码", "资产名称", "资产类型", "归还数量", "借用部门", "借用人", "归还类型", "记录人", "归还时间"};
 
     String BorrowListID = "";
 
@@ -76,9 +81,60 @@ public class Activity_ZCGH extends BaseActivity {
                         if (checklist.contains(tiaoma.getText())) {
                             ShowWarmMsgDialog("归还列表已存在此归还数据！");
                         } else {
-                            String temp = tiaoma.getText() + "○";
+                            String temp = guihuanren.getText() + "○" + BorrowListID + "○" + tiaoma.getText() + "○" + all_mingchen
+                                    + "○" + all_leixing + "○" + num_guihuan.getNumber() + "○" + all_bumen + "○" + all_jieyongren + "○" + " "
+                                    + "○" + UserInfo.USERNAME + "○" + CommonMethod.getTime();
+                            temp_guihuanlist.add(temp);
+                            SetTableLayout(table_guihuan);
+                            SetHeader(list_header1);
+                            firstRowAsTitle(temp_guihuanlist);
+                            checklist.add(tiaoma.getText());
                         }
                     }
+                }
+            }
+        });
+
+        header.getRightbutton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    sqLiteDatabase.beginTransaction();
+                    for (String i : temp_guihuanlist) {
+                        String[] temp = i.split("○");
+                        ContentValues contentValues = new ContentValues();
+                        contentValues.put("Returnman", temp[0]);
+                        contentValues.put("BorrowListID", temp[1]);
+                        contentValues.put("AssetID", temp[2]);
+                        contentValues.put("MaterielName", temp[3]);
+                        contentValues.put("MaterielKind", temp[4]);
+                        contentValues.put("ReturnNum", temp[5]);
+                        contentValues.put("DeptName", temp[6]);
+                        contentValues.put("Borrowman", temp[7]);
+                        contentValues.put("UserName", temp[8]);
+                        contentValues.put("EditDate", temp[9]);
+
+                        if (sqLiteDatabase.insertOrThrow("AssetReturnDetail", null, contentValues) != -1) {
+                            listDetail.add(temp[0]);
+                        }
+                    }
+                    sqLiteDatabase.setTransactionSuccessful();
+                    SetTableLayout(table_jieyong);
+                    ClearData();
+                    SetTableLayout(table_guihuan);
+                    ClearData();
+                    bumen.SetText("");
+                    num_jieyong.SetText("");
+                    num_guihuan.getEdittext().setText("");
+                    guihuanren.SetText("");
+                    jieyongren.SetText("");
+                    SetValues("AssetReturnDetail", listDetail);
+                    addList("AssetReturnDetail");
+                    ShowWarmMsgDialog("归还成功！");
+                } catch (Exception e) {
+                    ShowErrMsgDialog(e.getMessage());
+                } finally {
+                    sqLiteDatabase.endTransaction();
                 }
             }
         });
@@ -108,29 +164,32 @@ public class Activity_ZCGH extends BaseActivity {
         }
         cursor.close();
 
-        temp_jieyonglist = new ArrayList<>();
         Cursor cursor1 = sqLiteDatabase.rawQuery("select * from AssetBorrowListDetail where BorrowListID = '" + BorrowListID + "'", null);
         while (cursor1.moveToNext()) {
             String str_jieyongren = cursor1.getString(cursor1.getColumnIndex("Borrowman"));
-            String str_bumen = cursor1.getString(cursor1.getColumnIndex("DeptID"));
+            String str_bumen = cursor1.getString(cursor1.getColumnIndex("DeptName"));
             String str_tiaoma = cursor1.getString(cursor1.getColumnIndex("AssetID"));
             String mingchen = cursor1.getString(cursor1.getColumnIndex("MaterielName"));
             String leixing = cursor1.getString(cursor1.getColumnIndex("MaterielKind"));
             String shuliang = cursor1.getString(cursor1.getColumnIndex("BorrowNum"));
             String jieyongleixing = cursor1.getString(cursor1.getColumnIndex("BorrowType"));
-            String jiluren = cursor1.getString(cursor1.getColumnIndex("UserID"));
+            String jiluren = cursor1.getString(cursor1.getColumnIndex("UserName"));
             String shijian = cursor1.getString(cursor1.getColumnIndex("EditDate"));
-            String temp = str_jieyongren + "○" + str_bumen + "○" + str_tiaoma + "○" + mingchen + "○" + leixing
+            String temp = str_jieyongren + "○" + str_bumen + "○" + BorrowListID + "○" + str_tiaoma + "○" + mingchen + "○" + leixing
                     + "○" + shuliang + "○" + jieyongleixing + "○" + jiluren + "○" + shijian;
             temp_jieyonglist.add(temp);
             if (tiaoma.getText().equals(str_tiaoma)) {
                 bumen.SetText(str_bumen);
                 jieyongren.SetText(str_jieyongren);
                 num_jieyong.SetText(shuliang);
+                all_bumen = str_bumen;
+                all_jieyongren = str_jieyongren;
+                all_leixing = leixing;
+                all_mingchen = mingchen;
             }
         }
-        SetHeader(list_header);
         SetTableLayout(table_jieyong);
+        SetHeader(list_header);
         firstRowAsTitle(temp_jieyonglist);
         cursor1.close();
     }

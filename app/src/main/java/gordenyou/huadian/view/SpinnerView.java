@@ -75,9 +75,17 @@ public class SpinnerView extends LinearLayout {
         return spinner;
     }
 
-    public String getText(){
+    public String getID(){
         if(spinner.getSelectedItemId() != 0){
             return spinner.getSelectedItem().toString().split("_")[0];
+        }else{
+            return "";
+        }
+    }
+
+    public String getName(){
+        if(spinner.getSelectedItemId() != 0){
+            return spinner.getSelectedItem().toString().split("_")[1];
         }else{
             return "";
         }

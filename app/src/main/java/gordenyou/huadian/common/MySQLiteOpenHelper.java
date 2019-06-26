@@ -146,7 +146,7 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
             "BorrowNum int," +
             "PlanDate datetime," +
             "UnitID text," +
-            "DeptID text," +
+            "DeptName text," +
             "area text," +
             "Borrowman text," +
             "UserName text," +
@@ -158,12 +158,14 @@ public class MySQLiteOpenHelper extends SQLiteOpenHelper {
 
     private String sql_AssetReturnDetail = "Create table AssetReturnDetail(BorrowListID text," +
             "AssetID text," +
+            "MaterielName text," +
+            "MaterielKind text," +
             "ReturnNum int," +
             "Returnman text," +
             "ReturnDate text," +
             "UnitID text," +
             "Borrowman text," +
-            "DeptID text," +
+            "DeptName text," +
             "UserName text," +
             "ReturnType text," +
             "StockID text," +
