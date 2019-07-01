@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -12,13 +13,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.json.JSONException;
-
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,6 +48,17 @@ public class Activity_ZCPD extends BaseActivity implements View.OnClickListener 
     @BindView(R.id.zcpd_saomiao)
     ScannerView saomiao;
 
+    @BindView(R.id.zcpd_kaishi)
+    Button kaishi;
+    @BindView(R.id.zcpd_jieshu)
+    Button jieshu;
+    @BindView(R.id.zcpd_weizai)
+    Button weizai;
+    @BindView(R.id.zcpd_state)
+    TextView state;
+
+    @BindView(R.id.zcpd_tablename)
+    TextView tablename;
     @BindView(R.id.zcpd_linearlayout)
     LinearLayout linearLayout;
     @BindView(R.id.zcpd_table)
@@ -97,6 +109,8 @@ public class Activity_ZCPD extends BaseActivity implements View.OnClickListener 
     HashSet<String> set_id = new HashSet<>();
     static HashSet<String> set_yipandian = new HashSet<>(); //已盘点的id
     static HashSet<String> set_chayi = new HashSet<>();
+    Set<String> list_scan = new HashSet<>(); //盘点中的缓存
+    Set<String> list_out = new HashSet<>(); //未在盘点单的列表
     ArrayList<String> temp_list = new ArrayList<>();//表格的数据
     ArrayList<String> list;
 
@@ -106,6 +120,7 @@ public class Activity_ZCPD extends BaseActivity implements View.OnClickListener 
     MySQLiteOpenHelper dbhelper;
     SQLiteDatabase sqLiteDatabase;
     public static String str_danhao;
+    String[] header;
 
     @Override
     public void initViews(Bundle savedInstanceState) {
@@ -114,7 +129,7 @@ public class Activity_ZCPD extends BaseActivity implements View.OnClickListener 
         SetLayout(linearLayout);
         SetTableLayout(tableLayout);
         SetHeaderTitle(headerTitle);
-        String[] header = {"资产ID", "资产名称", "公司代码", "区域编码", "区域", "房间", "负责人", "使用人", "新公司",
+        header = new String[]{"资产ID", "资产名称", "公司代码", "区域编码", "区域", "房间", "负责人", "使用人", "新公司",
                 "新成本中心", "新区域", "新使用人", "扫描人", "新房间", "新备注", "新标签", "扫描时间", "产品序号", "备注"};
         SetHeader(header);
 
@@ -127,7 +142,6 @@ public class Activity_ZCPD extends BaseActivity implements View.OnClickListener 
     public void initValues() {
         dbhelper = new MySQLiteOpenHelper(getBaseContext(), "temp_data.db", null, 1);
         sqLiteDatabase = dbhelper.getWritableDatabase();
-
     }
 
     @Override
@@ -262,6 +276,9 @@ public class Activity_ZCPD extends BaseActivity implements View.OnClickListener 
 
 
     private void SetClickListener() {
+        kaishi.setOnClickListener(this);
+        jieshu.setOnClickListener(this);
+        weizai.setOnClickListener(this);
         quanxuan.setOnClickListener(this);
         radio1.setOnClickListener(this);
         radio2.setOnClickListener(this);
@@ -365,6 +382,8 @@ public class Activity_ZCPD extends BaseActivity implements View.OnClickListener 
         switch (m) {
             case 4: //已盘点
                 intyema = 1;
+                tablename.setText("已盘点");
+                SetHeader(header);
                 //记录以盘点的选项。
                 if (set_yipandian == null) {
                     set_yipandian = new HashSet<>();
@@ -376,6 +395,8 @@ public class Activity_ZCPD extends BaseActivity implements View.OnClickListener 
                 break;
             case 5: //差异
                 intyema = 1;
+                tablename.setText("差异");
+                SetHeader(header);
                 //记录以盘点的选项。
                 if (set_chayi == null) {
                     set_chayi = new HashSet<>();
@@ -386,8 +407,16 @@ public class Activity_ZCPD extends BaseActivity implements View.OnClickListener 
                 SetCheckboxState();
                 break;
             case 3://未盘点
+                intyema = 1;
+                tablename.setText("未盘点");
+                SetHeader(header);
+                radiogroup.setVisibility(View.GONE);
+                BuildTableAndPage(temp_list, intyema);
+                break;
             case 6://已确认
                 intyema = 1;
+                tablename.setText("已确认");
+                SetHeader(header);
                 radiogroup.setVisibility(View.GONE);
                 BuildTableAndPage(temp_list, intyema);
                 break;
@@ -433,10 +462,8 @@ public class Activity_ZCPD extends BaseActivity implements View.OnClickListener 
 
     /**
      * 绘制表格和页码
-     *
      * @param temp_list
      * @param intyema
-     * @throws JSONException
      */
     private void BuildTableAndPage(ArrayList<String> temp_list, int intyema) {
         int qishi = intyema * TABLE_LENGTH < temp_list.size() ? intyema * TABLE_LENGTH : temp_list.size();
@@ -604,7 +631,45 @@ public class Activity_ZCPD extends BaseActivity implements View.OnClickListener 
                 }
                 break;
             case R.id.header_rightbutton:
-
+                break;
+            case R.id.zcpd_kaishi:
+                if(kaishi.getText().toString().equals("开始盘点")){
+                    kaishi.setText("结束盘点");
+                    saomiao.setVisibility(View.VISIBLE);
+                    state.setText("盘点中");
+                    state.setTextColor(getResources().getColor(R.color.pandianzhong));
+                    SetFocus(saomiao.getEditTextView());
+                }else{
+                    new CheckListInfoAsync().execute(list_scan);
+                    kaishi.setText("开始盘点");
+                }
+                break;
+            case R.id.zcpd_jieshu:
+                break;
+            case R.id.zcpd_weizai:
+                tablename.setText("未在盘点单");
+                ArrayList<String> list_weizai = new ArrayList<>();
+                String[] newheader = new String[]{"资产条码", "资产名称", "资产类型", "成本中心", "所在区域", "负责人", "使用人"};
+                String[] values = new String[]{"mcode", "MaterielName", "MaterielKind", "CostCenter", "areaname", "resman", "ownername"};
+                for (String i: list_out){
+                    Cursor cursor = sqLiteDatabase.rawQuery("Select * from rMaterielInfo where mcode = '" + i + "'",null);
+                    StringBuilder str_temp = new StringBuilder();
+                    while(cursor.moveToNext()){
+                        for(String j: values){
+                            String temp = cursor.getString(cursor.getColumnIndex(j));
+                            if(str_temp.length() == 0){
+                                str_temp.append(temp);
+                            }else{
+                                str_temp.append("○").append(temp);
+                            }
+                        }
+                    }
+                    list_weizai.add(str_temp.toString());
+                    cursor.close();
+                }
+                SetHeader(newheader);
+                BuildTableAndPage(list_weizai, 1);
+                break;
         }
     }
 
@@ -696,6 +761,67 @@ public class Activity_ZCPD extends BaseActivity implements View.OnClickListener 
                     }
                 }
             }
+        }
+    }
+
+    @Override
+    public void ScannerEvent() {
+        list_scan.add(saomiao.getText());
+    }
+
+    private void SetFocus(EditText editText) {
+        editText.setFocusable(true);
+        editText.setFocusableInTouchMode(true);
+        editText.requestFocus();
+    }
+
+    private class CheckListInfoAsync extends AsyncTask<Set<String>, Integer, Void> {
+
+        String str_danhao;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            str_danhao = danhao.getID();
+            dbhelper = new MySQLiteOpenHelper(getBaseContext(), "temp_data.db", null, 1);
+            sqLiteDatabase = dbhelper.getWritableDatabase();
+        }
+
+        @Override
+        protected Void doInBackground(Set<String>... params) {
+            for(String i: params[0]){
+                Cursor cursor = sqLiteDatabase.rawQuery("Select * from rCheckListInfo where CheckListID = '"
+                        + str_danhao +"' and AssetID = '" + i + "'", null);
+                if(cursor.getCount() == 0){
+                    list_out.add(i);
+                }else{
+                    ContentValues contentValues = new ContentValues();
+                    contentValues.put("flags", 1);
+                    sqLiteDatabase.update("rCheckListInfo", contentValues
+                            , "CheckListID = ? and AssetID = ?", new String[]{str_danhao, i});
+                }
+                cursor.close();
+            }
+            return null;
+        }
+
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            saomiao.setVisibility(View.GONE);
+            state.setText("未盘点");
+            state.setTextColor(getResources().getColor(R.color.deepgrey));
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+
         }
     }
 }

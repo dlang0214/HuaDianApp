@@ -7,6 +7,7 @@
     <color name="blue">#33b5e5</color>
     <color name="SkyBlue">#4876FF</color><!--天兰色 -->
 
+    <color name="pandianzhong">#00FF7F</color>
     <color name="deepgrey">#BEBEBE</color>
     <color name="background">#FFFAFA</color>
 </resources>
