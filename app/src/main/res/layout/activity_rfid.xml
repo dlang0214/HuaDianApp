@@ -14,84 +14,79 @@
         app:headertitle="资产RFID绑定" />
 
     <!--<gordenyou.huadian.view.SpinnerView-->
-        <!--android:id="@+id/rfid_spinner"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginBottom="12dp"-->
-        <!--app:spinnertitle="公司代码" />-->
+    <!--android:id="@+id/rfid_spinner"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginBottom="12dp"-->
+    <!--app:spinnertitle="公司代码" />-->
 
     <gordenyou.huadian.view.ScannerView
         android:id="@+id/rfid_bianma"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
         app:scannerbuttonname="查找"
-        app:scannerhint="请输入资产编码"
+        app:scannerhint="请扫描资产编码"
         app:scannertitle="资产编码" />
 
     <gordenyou.huadian.view.TextshowView
         android:id="@+id/rfid_mingchen"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
         app:textshowtitle="资产名称" />
 
     <gordenyou.huadian.view.TextshowView
         android:id="@+id/rfid_leixin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
         app:textshowtitle="资产型号" />
 
     <!--<gordenyou.huadian.view.TextshowView-->
-        <!--android:id="@+id/rfid_pingpai"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginBottom="3dp"-->
-        <!--app:edittexthint="请输入资产品牌"-->
-        <!--app:textshowtitle="资产品牌：" />-->
+    <!--android:id="@+id/rfid_pingpai"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginBottom="3dp"-->
+    <!--app:edittexthint="请输入资产品牌"-->
+    <!--app:textshowtitle="资产品牌：" />-->
 
     <gordenyou.huadian.view.TextshowView
-        android:id="@+id/rfid_bumen"
+        android:id="@+id/rfid_chengben"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        app:textshowtitle="所属部门" />
+        app:textshowtitle="成本中心" />
 
     <gordenyou.huadian.view.TextshowView
         android:id="@+id/rfid_quyu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
         app:textshowtitle="所属区域" />
 
-    <gordenyou.huadian.view.TextshowView
-        android:id="@+id/rfid_zerenren"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        app:textshowtitle="责  任  人" />
+    <!--<gordenyou.huadian.view.TextshowView-->
+    <!--android:id="@+id/rfid_zerenren"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginBottom="12dp"-->
+    <!--app:textshowtitle="责  任  人" />-->
 
-    <gordenyou.huadian.view.TextshowView
-        android:id="@+id/rfid_suoyouren"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        app:textshowtitle="所  有  人" />
+    <!--<gordenyou.huadian.view.TextshowView-->
+    <!--android:id="@+id/rfid_suoyouren"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginBottom="12dp"-->
+    <!--app:textshowtitle="所  有  人" />-->
 
-    <gordenyou.huadian.view.TextshowView
-        android:id="@+id/rfid_chuchang"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        app:textshowtitle="出厂编码" />
+    <!--<gordenyou.huadian.view.TextshowView-->
+    <!--android:id="@+id/rfid_chuchang"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginBottom="12dp"-->
+    <!--app:textshowtitle="出厂编码" />-->
 
-    <gordenyou.huadian.view.TextshowView
-        android:id="@+id/rfid_beizhu"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp"
-        app:textshowtitle="备        注" />
+    <!--<gordenyou.huadian.view.TextshowView-->
+    <!--android:id="@+id/rfid_beizhu"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginBottom="12dp"-->
+    <!--app:textshowtitle="备        注" />-->
 
     <gordenyou.huadian.view.ScannerView
         android:id="@+id/rfid_EPC"
@@ -101,6 +96,51 @@
         app:scannerbuttonname="读取"
         app:scannerhint="请输入或读取RFID"
         app:scannertitle="RFID编号" />
+
+    <LinearLayout
+        android:id="@+id/rfid_linearlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorAccent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/colorPrimary"
+            android:text="RFID绑定明细表" />
+
+        <tableLayout.FreeScrollView
+            android:layout_width="match_parent"
+            android:layout_height="270dp">
+
+            <tableLayout.TableLayout
+                android:id="@+id/rfid_table"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                app:backgroundColorSelected="@color/colorAccent"
+                app:headerColor="@color/colorPrimary"
+                app:tableColumnPadding="8dp"
+                app:tableDividerColor="#ddd"
+                app:tableDividerSize="1dp"
+                app:tableRowHeight="30dp"
+                app:tableTextColor="#333"
+                app:tableTextColorSelected="#fff"
+                app:tableTextSize="14dp" />
+
+        </tableLayout.FreeScrollView>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorAccent" />
+    </LinearLayout>
     <!--<Button-->
     <!--android:layout_width="300dp"-->
     <!--android:layout_height="36dp"-->

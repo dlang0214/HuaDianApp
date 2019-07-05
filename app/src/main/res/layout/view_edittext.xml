@@ -37,7 +37,7 @@
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="3dp"
         android:background="@drawable/edittextview_background"
-        android:gravity="center"
+        android:gravity="start|center_vertical"
         android:textSize="14sp" />
 
 </LinearLayout>

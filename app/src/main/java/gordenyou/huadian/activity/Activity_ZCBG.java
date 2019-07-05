@@ -1,8 +1,15 @@
 package gordenyou.huadian.activity;
 
+import android.app.AlertDialog;
+import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.View;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,19 +40,22 @@ public class Activity_ZCBG extends BaseActivity {
     @BindView(R.id.zcbg_quyu)
     TextshowView quyu;
 
-    @BindView(R.id.zcbg_newleixing)
-    EdittextView newleixing;
+    @BindView(R.id.zcbg_newzerenren)
+    EdittextView newzerenren;
+    @BindView(R.id.zcbg_newshiyongren)
+    EdittextView newshiyongren;
     @BindView(R.id.zcbg_newbianma)
     EdittextView newbianma;
     @BindView(R.id.zcbg_newbeizhu)
     EdittextView newbeizhu;
-    @BindView(R.id.zcbg_newbumen)
-    EdittextView newbumen;
+    @BindView(R.id.zcbg_newfangjian)
+    EdittextView newfangjian;
     @BindView(R.id.zcbg_newquyu)
     EdittextView newquyu;
 
     MySQLiteOpenHelper dbhelper;
     SQLiteDatabase sqLiteDatabase;
+    Set<String> list_change = new HashSet<>();
 
     @Override
     public void initViews(Bundle savedInstanceState) {
@@ -56,6 +66,34 @@ public class Activity_ZCBG extends BaseActivity {
 
     @Override
     public void LogicMethod() {
+        headerTitle.getRightbutton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new AlertDialog.Builder(getBaseContext()).setTitle("提示信息").setMessage("确认变更？").setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        ContentValues con = new ContentValues();
+                        con.put("newres",newzerenren.getText());
+                        con.put("newowner",newshiyongren.getText());
+                        con.put("newsn",newbianma.getText());
+                        con.put("newremark",newbeizhu.getText());
+                        con.put("newfangjian",newfangjian.getText());
+                        con.put("newquyu",newquyu.getText());
+                        if(sqLiteDatabase.update("rMaterielInof", con,"mcode = ?" , new String[]{tiaoma.getText()}) == 1){
+                            ShowWarmMsgDialog("资产变更成功！");
+                            list_change.add(tiaoma.getText());
+                            SetValues("rMaterielInfo", list_change);
+                            newzerenren.getEditText().setText("");
+                            newshiyongren.getEditText().setText("");
+                            newbianma.getEditText().setText("");
+                            newbeizhu.getEditText().setText("");
+                            newfangjian.getEditText().setText("");
+                            newquyu.getEditText().setText("");
+                        }
+                    }
+                }).show();
+            }
+        });
 
     }
 
@@ -63,6 +101,8 @@ public class Activity_ZCBG extends BaseActivity {
     public void initValues() {
         dbhelper = new MySQLiteOpenHelper(getBaseContext(), "temp_data.db", null, 1);
         sqLiteDatabase = dbhelper.getWritableDatabase();
+        addList("rMaterielInfo");
+        list_change = getSetValues("rMaterielInfo");
     }
 
     @Override

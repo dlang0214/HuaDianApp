@@ -62,9 +62,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Validato
     public ProgressDialog progressDialog;
     private static HeaderTitle headerTitle;
 
-    //增加表单验证
-    public Validator validator;
-
     //网络请求代码
     public static int m;
 
@@ -78,8 +75,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Validato
         initViews(savedInstanceState);
 
         initValues();
-        validator = new Validator(this);
-        validator.setValidationListener(this);
         LogicMethod();
 
     }

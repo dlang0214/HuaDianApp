@@ -17,8 +17,8 @@
         android:id="@+id/zcbg_tiaoma"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:scannerbuttonname="扫描"
         app:buttonvisable="false"
+        app:scannerbuttonname="扫描"
         app:scannerhint="请扫描条码"
         app:scannertitle="扫描条码" />
 
@@ -35,10 +35,10 @@
         app:textshowtitle="资产名称" />
 
     <!--<gordenyou.huadian.view.TextshowView-->
-        <!--android:id="@+id/zcbg_ping"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--app:textshowtitle="资产品牌" />-->
+    <!--android:id="@+id/zcbg_ping"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--app:textshowtitle="资产品牌" />-->
 
     <gordenyou.huadian.view.TextshowView
         android:id="@+id/zcbg_leixing"
@@ -70,26 +70,62 @@
         android:layout_height="wrap_content"
         app:textshowtitle="所在区域" />
 
-    <!--<gordenyou.huadian.view.EdittextView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginBottom="3dp"-->
-        <!--app:edittexthint="请输入新的品牌"-->
-        <!--app:edittexttitle="更改品牌" />-->
-
-    <gordenyou.huadian.view.EdittextView
-        android:id="@+id/zcbg_newleixing"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="3dp"
-        app:edittexthint="请输入新的型号"
-        app:edittexttitle="更改类型" />
+        android:orientation="horizontal">
+
+        <gordenyou.huadian.view.TextshowView
+            android:id="@+id/zcbg_zerenren"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:textshowtitle="责  任  人" />
+
+        <gordenyou.huadian.view.TextshowView
+            android:id="@+id/zcbg_shiyongren"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:textshowtitle="使  用  人" />
+    </LinearLayout>
+
+    <!--<gordenyou.huadian.view.EdittextView-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginBottom="3dp"-->
+    <!--app:edittexthint="请输入新的品牌"-->
+    <!--app:edittexttitle="更改品牌" />-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <gordenyou.huadian.view.EdittextView
+            android:id="@+id/zcbg_newzerenren"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            app:edittexthint="请输入新的责任人"
+            app:edittexttitle="新责任人" />
+
+        <gordenyou.huadian.view.EdittextView
+            android:id="@+id/zcbg_newshiyongren"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginBottom="12dp"
+            app:edittexthint="请输入新的使用人"
+            app:edittexttitle="新使用人" />
+    </LinearLayout>
 
     <gordenyou.huadian.view.EdittextView
         android:id="@+id/zcbg_newbianma"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="3dp"
+        android:layout_marginBottom="12dp"
         app:edittexthint="请输入新的出厂编码"
         app:edittexttitle="更改编码" />
 
@@ -97,23 +133,23 @@
         android:id="@+id/zcbg_newbeizhu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="3dp"
+        android:layout_marginBottom="12dp"
         app:edittexthint="请输入新的备注"
         app:edittexttitle="更改备注" />
 
     <gordenyou.huadian.view.EdittextView
-        android:id="@+id/zcbg_newbumen"
+        android:id="@+id/zcbg_newfangjian"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="3dp"
-        app:edittexthint="请输入新的部门"
-        app:edittexttitle="更改部门" />
+        android:layout_marginBottom="12dp"
+        app:edittexthint="请输入新的房间"
+        app:edittexttitle="更改房间" />
 
     <gordenyou.huadian.view.EdittextView
         android:id="@+id/zcbg_newquyu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="3dp"
+        android:layout_marginBottom="12dp"
         app:edittexthint="请输入新的区域"
         app:edittexttitle="更改区域" />
 
