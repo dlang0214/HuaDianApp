@@ -252,8 +252,8 @@ public class Activity_ZCPD extends BaseActivity implements View.OnClickListener 
                 if (msg.what == reader.msgreadepc)
                 {
 //                    chaxun.getEditTextView().setText(msg.obj.toString());
-                    if(list_out != null){
-                        list_out.add(msg.obj.toString());
+                    if(list_reader != null){
+                        list_reader.add(msg.obj.toString());
                     }
                 }
                 if (msg.what == reader.readover)
@@ -356,6 +356,7 @@ public class Activity_ZCPD extends BaseActivity implements View.OnClickListener 
                             .setMessage("资产差异调整成功!").setPositiveButton("确定", null).show();
                     yipandian.performClick();
                     change = true;
+                    list_change.add(barcode);
                 }
                 sqLiteDatabase.endTransaction();
             }
@@ -895,7 +896,7 @@ public class Activity_ZCPD extends BaseActivity implements View.OnClickListener 
 
         @Override
         protected Void doInBackground(List<Set<String>>... params) {
-            for(String i: params[0].get(0)){
+            for(String i: params[0].get(0)){//条码处理
                 Cursor cursor = sqLiteDatabase.rawQuery("Select * from rCheckListInfo where CheckListID = '"
                         + str_danhao +"' and AssetID = '" + i + "'", null);
                 if(cursor.getCount() == 0){
@@ -911,20 +912,26 @@ public class Activity_ZCPD extends BaseActivity implements View.OnClickListener 
                 cursor.close();
             }
 
-            for(String i: params[0].get(1)){
+            for(String i: params[0].get(1)){//RFID处理
                 Cursor cursor = sqLiteDatabase.rawQuery("select * from rCheckListInfo where EPC = '" + i + "'", null);
                 if(cursor.getCount() != 0){
                     String assetid = cursor.getString(cursor.getColumnIndex("mcode"));
-                    Cursor cursor1 = sqLiteDatabase.rawQuery("select * from rCheckListInfo where AssetID = '" + assetid + "'", null);
+                    Cursor cursor1 = sqLiteDatabase.rawQuery("Select * from rCheckListInfo where CheckListID = '"
+                            + str_danhao +"' and AssetID = '" + assetid + "'", null);
                     if(cursor1.getCount() == 0){
                         list_out.add(assetid);
                     }else{
                         ContentValues contentValues = new ContentValues();
                         contentValues.put("flags", 1);
-                        sqLiteDatabase.update("rCheckListInfo", contentValues
-                                , "CheckListID = ? and AssetID = ?", new String[]{str_danhao, assetid});
+                        if(sqLiteDatabase.update("rCheckListInfo", contentValues
+                                , "CheckListID = ? and AssetID = ?", new String[]{str_danhao, assetid}) == 1){
+                            list_change.add(assetid);
+                            change = true;
+                        }
                     }
+                    cursor1.close();
                 }
+                cursor.close();
             }
             return null;
         }
@@ -948,7 +955,6 @@ public class Activity_ZCPD extends BaseActivity implements View.OnClickListener 
         @Override
         protected void onCancelled() {
             super.onCancelled();
-
         }
     }
 }

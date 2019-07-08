@@ -128,8 +128,8 @@ public class Activity_ZCGH extends BaseActivity {
                     num_guihuan.getEdittext().setText("");
                     guihuanren.SetText("");
                     jieyongren.SetText("");
-                    SetValues("AssetReturnDetail", listDetail);
-                    addList("AssetReturnDetail");
+                    SetValues("ZCGH", listDetail);
+                    addList("ZCGH");
                     ShowWarmMsgDialog("归还成功！");
                 } catch (Exception e) {
                     ShowErrMsgDialog(e.getMessage());
@@ -144,7 +144,8 @@ public class Activity_ZCGH extends BaseActivity {
     public void initValues() {
         dbhelper = new MySQLiteOpenHelper(getBaseContext(), "temp_data.db", null, 1);
         sqLiteDatabase = dbhelper.getWritableDatabase();
-        listDetail = getSetValues("AssetReturnDetail");
+        listDetail = getSetValues("ZCGH");
+        listDetail = new HashSet<>();
     }
 
     @Override

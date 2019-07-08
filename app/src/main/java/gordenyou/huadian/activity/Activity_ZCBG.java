@@ -82,7 +82,7 @@ public class Activity_ZCBG extends BaseActivity {
                         if(sqLiteDatabase.update("rMaterielInof", con,"mcode = ?" , new String[]{tiaoma.getText()}) == 1){
                             ShowWarmMsgDialog("资产变更成功！");
                             list_change.add(tiaoma.getText());
-                            SetValues("rMaterielInfo", list_change);
+                            SetValues("ZCBG", list_change);
                             newzerenren.getEditText().setText("");
                             newshiyongren.getEditText().setText("");
                             newbianma.getEditText().setText("");
@@ -101,8 +101,8 @@ public class Activity_ZCBG extends BaseActivity {
     public void initValues() {
         dbhelper = new MySQLiteOpenHelper(getBaseContext(), "temp_data.db", null, 1);
         sqLiteDatabase = dbhelper.getWritableDatabase();
-        addList("rMaterielInfo");
-        list_change = getSetValues("rMaterielInfo");
+        list_change = getSetValues("ZCBG");
+        list_change = new HashSet<>();
     }
 
     @Override

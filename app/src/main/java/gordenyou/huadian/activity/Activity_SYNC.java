@@ -694,28 +694,193 @@ public class Activity_SYNC extends BaseActivity implements View.OnClickListener 
 
     private void getDataUpload() {
         Set<String> changelist = getSetValues("changelist");
-        for(String list : changelist){
-            switch(list){
+        dbhelper = new MySQLiteOpenHelper(getBaseContext(), "temp_data.db", null, 1);
+        sqLiteDatabase = dbhelper.getWritableDatabase();
+        for (String list : changelist) {
+            switch (list) {
+                case "RFID":
+                    UploadData(list, getRFIDInfo(), 12);
+                    break;
+                case "ZCBG":
+                    UploadData(list, getZCBGInfo(), 13);
+                    break;
+                case "ZCGH":
+                    UploadData(list, getZCGHInfo(), 14);
+                    break;
+                case "ZCPD":
+                    UploadData(list, getZCPDInfo(), 15);
+                    break;
                 case "AssetBorrowListDetail":
-                    WebParams.Clear();
-                    WebParams.SetSubOperationFunction("UploadListInfo_Gorden");
-                    WebParams.Setparam1(list);
-                    WebParams.Setparam2(getAssetBorrowListDetialInfo());
-                    WebHttpRequest(11);
+                    UploadData(list, getAssetBorrowListDetialInfo(), 11);
+                    break;
+                case "AssetBorrowList":
+                    UploadData(list, getAssetBorrowListInfo(), 10);
+                    break;
             }
         }
         //ProgressDialogShow(this, "同步中...", "请等待！");
 
     }
 
+    private void UploadData(String list, String data, int m) {
+        WebParams.Clear();
+        WebParams.SetSubOperationFunction("UploadListInfo_Gorden");
+        WebParams.Setparam1(list);
+        WebParams.Setparam2(data);
+        WebHttpRequest(m);
+    }
+
     private String getAssetBorrowListDetialInfo() {
-        dbhelper = new MySQLiteOpenHelper(getBaseContext(), "temp_data.db", null, 1);
-        sqLiteDatabase = dbhelper.getWritableDatabase();
         Set<String> borrowListDetail = getSetValues("AssetBorrowListDetail");
         StringBuilder list = new StringBuilder();
-        for(String listID : borrowListDetail) {
+        for (String listID : borrowListDetail) {
             Cursor cursor = sqLiteDatabase.rawQuery("select * from AssetBorrowListDetail where BorrowListID = '" + listID + "'", null);
-            String[] values = new String[]{"BorrowListID", "Borrowman", "DeptName", "AssetID", "MaterielName", "MaterielKind", "BorrowNum", "BorrowType", "UserName", "EditDate", "State"};
+            String[] values = new String[]{"BorrowListID", "Borrowman", "DeptName", "AssetID", "MaterielName", "MaterielKind", "BorrowNum", "BorrowType", "UserName", "EditDate", "PlanDate", "State"};
+
+            while (cursor.moveToNext()) {
+                StringBuilder temp = new StringBuilder();
+                int j = 1;
+                for (String i : values) {
+                    if (j != values.length) {
+                        temp.append(cursor.getString(cursor.getColumnIndex(i))).append("○");
+                    } else {
+                        temp.append(cursor.getString(cursor.getColumnIndex(i)));
+                    }
+                    j++;
+                }
+                if (list.length() == 0) {
+                    list.append(temp);
+                } else {
+                    list.append("$").append(temp);
+                }
+            }
+            cursor.close();
+        }
+        return list.toString();
+    }
+
+    private String getAssetBorrowListInfo() {
+        Set<String> borrowListDetail = getSetValues("AssetBorrowList");
+        StringBuilder list = new StringBuilder();
+        for (String listID : borrowListDetail) {
+            Cursor cursor = sqLiteDatabase.rawQuery("select * from AssetBorrowList where BorrowListID = '" + listID + "'", null);
+            String[] values = new String[]{"BorrowListID", "UserName", "EditDate"};
+
+            while (cursor.moveToNext()) {
+                StringBuilder temp = new StringBuilder();
+                int j = 1;
+                for (String i : values) {
+                    if (j != values.length) {
+                        temp.append(cursor.getString(cursor.getColumnIndex(i))).append("○");
+                    } else {
+                        temp.append(cursor.getString(cursor.getColumnIndex(i)));
+                    }
+                    j++;
+                }
+                if (list.length() == 0) {
+                    list.append(temp);
+                } else {
+                    list.append("$").append(temp);
+                }
+            }
+            cursor.close();
+        }
+        return list.toString();
+    }
+
+    private String getRFIDInfo() {
+        Set<String> ListDetail = getSetValues("RFID");
+        StringBuilder list = new StringBuilder();
+        for (String listID : ListDetail) {
+            Cursor cursor = sqLiteDatabase.rawQuery("select * from rMaterielInfo where mcode = '" + listID + "'", null);
+            String[] values = new String[]{"EPC"};
+
+            while (cursor.moveToNext()) {
+                StringBuilder temp = new StringBuilder();
+                int j = 1;
+                for (String i : values) {
+                    if (j != values.length) {
+                        temp.append(cursor.getString(cursor.getColumnIndex(i))).append("○");
+                    } else {
+                        temp.append(cursor.getString(cursor.getColumnIndex(i)));
+                    }
+                    j++;
+                }
+                if (list.length() == 0) {
+                    list.append(temp);
+                } else {
+                    list.append("$").append(temp);
+                }
+            }
+            cursor.close();
+        }
+        return list.toString();
+    }
+
+    private String getZCBGInfo() {
+        Set<String> ListDetail = getSetValues("ZCBG");
+        StringBuilder list = new StringBuilder();
+        for (String listID : ListDetail) {
+            Cursor cursor = sqLiteDatabase.rawQuery("select * from rMaterielInfo where mcode = '" + listID + "'", null);
+            String[] values = new String[]{"newres", "newowner", "newsn", "newremark", "newfangjian", "newquyu"};
+
+            while (cursor.moveToNext()) {
+                StringBuilder temp = new StringBuilder();
+                int j = 1;
+                for (String i : values) {
+                    if (j != values.length) {
+                        temp.append(cursor.getString(cursor.getColumnIndex(i))).append("○");
+                    } else {
+                        temp.append(cursor.getString(cursor.getColumnIndex(i)));
+                    }
+                    j++;
+                }
+                if (list.length() == 0) {
+                    list.append(temp);
+                } else {
+                    list.append("$").append(temp);
+                }
+            }
+            cursor.close();
+        }
+        return list.toString();
+    }
+
+    private String getZCGHInfo() {
+        Set<String> ListDetail = getSetValues("ZCGH");
+        StringBuilder list = new StringBuilder();
+        for (String listID : ListDetail) {
+            Cursor cursor = sqLiteDatabase.rawQuery("select * from AssetReturnDetail where BorrowListID = '" + listID + "'", null);
+            String[] values = new String[]{"Returnman", "BorrowListID", "AssetID", "MaterielName", "MaterielKind", "ReturnNum", "DeptName", "BorrowMan", "UserName", "EditDate"};
+
+            while (cursor.moveToNext()) {
+                StringBuilder temp = new StringBuilder();
+                int j = 1;
+                for (String i : values) {
+                    if (j != values.length) {
+                        temp.append(cursor.getString(cursor.getColumnIndex(i))).append("○");
+                    } else {
+                        temp.append(cursor.getString(cursor.getColumnIndex(i)));
+                    }
+                    j++;
+                }
+                if (list.length() == 0) {
+                    list.append(temp);
+                } else {
+                    list.append("$").append(temp);
+                }
+            }
+            cursor.close();
+        }
+        return list.toString();
+    }
+
+    private String getZCPDInfo() {
+        Set<String> ListDetail = getSetValues("ZCPD");
+        StringBuilder list = new StringBuilder();
+        for (String listID : ListDetail) {
+            Cursor cursor = sqLiteDatabase.rawQuery("select * from rCheckListInfo where AssetID = '" + listID + "'", null);
+            String[] values = new String[]{"CheckListID","NewCompanyCode", "NewCostCenter", "NewLocation", "NewUser", "flags", "newroom", "newremark"};
 
             while (cursor.moveToNext()) {
                 StringBuilder temp = new StringBuilder();

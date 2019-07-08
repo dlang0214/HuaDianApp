@@ -17,6 +17,7 @@ import gordenyou.huadian.R;
 import gordenyou.huadian.common.CommonMethod;
 import gordenyou.huadian.common.MySQLiteOpenHelper;
 import gordenyou.huadian.util.UserInfo;
+import gordenyou.huadian.view.EdittextView;
 import gordenyou.huadian.view.HeaderTitle;
 import gordenyou.huadian.view.NumberView;
 import gordenyou.huadian.view.ScannerView;
@@ -39,6 +40,8 @@ public class Activity_ZCJY extends BaseActivity {
     NumberView shuliang;
     //    @BindView(R.id.zcjy_chuwei)
 //    EdittextView chuwei;
+    @BindView(R.id.zcjy_yuji)
+    EdittextView yujishijian;
     @BindView(R.id.zcjy_jieyongren)
     ScannerView jieyongren;
     @BindView(R.id.zcjy_table)
@@ -53,7 +56,7 @@ public class Activity_ZCJY extends BaseActivity {
     Set<String> ListDetail = new HashSet<>();
     Set<String> checklist = new HashSet<>();
 
-    String str_bumen, str_tiaoma, str_mingcheng, str_leixing, str_jieyongren, str_time, str_jiluren, str_jieyongleixing = "";
+    String str_bumen, str_tiaoma, str_mingcheng, str_leixing, str_jieyongren, str_time, str_jiluren, str_jieyongleixing = "", str_yujishijian;
     int int_shuliang;
     String BorrowID;
 
@@ -61,7 +64,7 @@ public class Activity_ZCJY extends BaseActivity {
     public void initViews(Bundle savedInstanceState) {
         setContentView(R.layout.activity_zcjy);
         ButterKnife.bind(this);
-        String[] header = {"借用人", "借用部门", "资产条码", "资产名称", "资产类型", "借用数量", "借用类型", "记录人", "借用时间"};
+        String[] header = {"借用人", "借用部门", "资产条码", "资产名称", "资产类型", "借用数量", "借用类型", "记录人", "借用时间", "归还时间"};
         SetLayout(linearLayout);
         SetTableLayout(tableLayout);
         SetHeaderTitle(headerTitle);
@@ -88,8 +91,9 @@ public class Activity_ZCJY extends BaseActivity {
                         str_jieyongren = jieyongren.getText();
                         str_jiluren = UserInfo.USERNAME;
                         str_time = CommonMethod.getTime();
+                        str_yujishijian = yujishijian.getText();
                         String temp = str_jieyongren + "○" + str_bumen + "○" + str_tiaoma + "○" + str_mingcheng + "○" +
-                                str_leixing + "○" + int_shuliang + "○" + str_jieyongleixing + "○" + str_jiluren + "○" + str_time;
+                                str_leixing + "○" + int_shuliang + "○" + str_jieyongleixing + "○" + str_jiluren + "○" + str_time + "○" + str_yujishijian;
                         temp_list.add(temp);
                         checklist.add(str_tiaoma);
                         firstRowAsTitle(temp_list);
@@ -133,6 +137,7 @@ public class Activity_ZCJY extends BaseActivity {
                 contentValues.put("BorrowType", temp[6]);
                 contentValues.put("UserName", temp[7]);
                 contentValues.put("EditDate", temp[8]);
+                contentValues.put("PlanDate", temp[9]);
                 contentValues.put("State", 0); //0为被借用，1位已归还。
                 if (sqLiteDatabase.insertOrThrow("AssetBorrowListDetail", null, contentValues) != -1) {
                     BorrowListDetail.add(BorrowID);
@@ -141,12 +146,13 @@ public class Activity_ZCJY extends BaseActivity {
             sqLiteDatabase.setTransactionSuccessful();
             SetValues("AssetBorrowList", BorrowListDetail);
             SetValues("AssetBorrowListDetail", ListDetail);
+            addList("AssetBorrowListDetail");
             ClearData();
             tiaoma.SetText("");
             mingchen.SetText("");
             leixing.SetText("");
             jieyongren.SetText("");
-            addList("AssetBorrowListDetail");
+
             ShowWarmMsgDialog("借用成功！");
         } catch (Exception e) {
             ShowErrMsgDialog(e.getMessage());

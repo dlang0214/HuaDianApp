@@ -24,6 +24,7 @@
         android:id="@+id/rfid_bianma"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:buttonvisable="false"
         app:scannerbuttonname="查找"
         app:scannerhint="请扫描资产编码"
         app:scannertitle="资产编码" />
@@ -38,7 +39,7 @@
         android:id="@+id/rfid_leixin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:textshowtitle="资产型号" />
+        app:textshowtitle="资产类型" />
 
     <!--<gordenyou.huadian.view.TextshowView-->
     <!--android:id="@+id/rfid_pingpai"-->
@@ -93,6 +94,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
+        app:buttonvisable="false"
         app:scannerbuttonname="读取"
         app:scannerhint="请输入或读取RFID"
         app:scannertitle="RFID编号" />
@@ -113,7 +115,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:textColor="@color/colorPrimary"
-            android:text="RFID绑定明细表" />
+            android:text="RFID绑定列表" />
 
         <tableLayout.FreeScrollView
             android:layout_width="match_parent"
