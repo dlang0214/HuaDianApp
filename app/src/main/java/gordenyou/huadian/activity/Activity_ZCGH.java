@@ -114,8 +114,12 @@ public class Activity_ZCGH extends BaseActivity {
                         contentValues.put("UserName", temp[8]);
                         contentValues.put("EditDate", temp[9]);
 
-                        if (sqLiteDatabase.insertOrThrow("AssetReturnDetail", null, contentValues) != -1) {
-                            listDetail.add(temp[0]);
+                        ContentValues contentValues1 = new ContentValues();
+                        contentValues1.put("State", 1);
+
+                        if (sqLiteDatabase.insertOrThrow("AssetReturnDetail", null, contentValues) != -1 &&
+                                sqLiteDatabase.update("AssetBorrowListDetail",contentValues1, "BorrowListID = ? and AssetID = ?" , new String[]{temp[1], temp[2]}) == 1) {
+                            listDetail.add(temp[1]);
                         }
                     }
                     sqLiteDatabase.setTransactionSuccessful();
@@ -123,6 +127,7 @@ public class Activity_ZCGH extends BaseActivity {
                     ClearData();
                     SetTableLayout(table_guihuan);
                     ClearData();
+                    tiaoma.SetText("");
                     bumen.SetText("");
                     num_jieyong.SetText("");
                     num_guihuan.getEdittext().setText("");

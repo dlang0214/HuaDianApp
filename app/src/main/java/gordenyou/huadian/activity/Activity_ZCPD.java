@@ -136,6 +136,8 @@ public class Activity_ZCPD extends BaseActivity implements View.OnClickListener 
 
     private Handler readerHandler = new ReaderHandler();
 
+    AlertDialog alertDialog;
+
     @Override
     public void initViews(Bundle savedInstanceState) {
         setContentView(R.layout.activity_zcpd);
@@ -255,6 +257,7 @@ public class Activity_ZCPD extends BaseActivity implements View.OnClickListener 
                     if(list_reader != null){
                         list_reader.add(msg.obj.toString());
                     }
+                    reader.Clean();
                 }
                 if (msg.what == reader.readover)
                 {
@@ -287,7 +290,7 @@ public class Activity_ZCPD extends BaseActivity implements View.OnClickListener 
         return true;
     }
 
-    public void showLayoutDialog(final Context context, final String barcode, final String str_danhao) {
+    public boolean showLayoutDialog(final Context context, final String barcode, final String str_danhao) {
         final AlertDialog dialog;
         View dialogview = LayoutInflater.from(context).inflate(R.layout.dialog_zcpd, null);
         HeaderTitle header = dialogview.findViewById(R.id.dlzcpd_header);
@@ -346,7 +349,7 @@ public class Activity_ZCPD extends BaseActivity implements View.OnClickListener 
                 String[] select = new String[]{str_danhao, barcode};
                 sqLiteDatabase.beginTransaction();
                 if (sqLiteDatabase.update("rCheckListInfo", values, whereClause, select) == 1) {
-                    dialog.dismiss();
+
                     sqLiteDatabase.setTransactionSuccessful();
                     if (set_yipandian.contains(barcode)) {
                         set_yipandian.remove(barcode);
@@ -354,16 +357,19 @@ public class Activity_ZCPD extends BaseActivity implements View.OnClickListener 
                     }
                     new AlertDialog.Builder(context).setTitle("提示信息")
                             .setMessage("资产差异调整成功!").setPositiveButton("确定", null).show();
-                    yipandian.performClick();
-                    change = true;
+                    dialog.dismiss();
+//                    yipandian.performClick();
+                    Set<String> list_change = getSetValues("ZCPD");
+                    list_change = new HashSet<>();
                     list_change.add(barcode);
+                    SetValues("ZCPD", list_change);
                 }
                 sqLiteDatabase.endTransaction();
             }
         });
         dialog.show();
+        return true;
     }
-
 
     private void SetClickListener() {
         kaishi.setOnClickListener(this);
@@ -746,8 +752,7 @@ public class Activity_ZCPD extends BaseActivity implements View.OnClickListener 
                     list_set.add(list_scan);
                     list_set.add(list_reader);
                     new CheckListInfoAsync().execute(list_set);
-                    ProgressDialogShow(getBaseContext(), "提示", "盘点数据处理中，请等待");
-
+                    alertDialog = new AlertDialog.Builder(this).setTitle("提示").setMessage("处理数据中").show();
                 }
                 break;
             case R.id.zcpd_jieshu:
@@ -949,7 +954,7 @@ public class Activity_ZCPD extends BaseActivity implements View.OnClickListener 
             kaishi.setText("开始盘点");
             state.setText("未盘点");
             state.setTextColor(getResources().getColor(R.color.deepgrey));
-            progressDialog.dismiss();
+            alertDialog.dismiss();
         }
 
         @Override

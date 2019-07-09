@@ -57,6 +57,9 @@ public class Activity_RFID extends BaseActivity {
     SQLiteDatabase sqLiteDatabase;
     Set<String> list_change = new HashSet<>();
 
+    Set<String> list_barcode = new HashSet<>();
+    Set<String> list_rfid = new HashSet<>();
+
     String[] header = new String[]{"资产编码", "RFID"};
     ArrayList<String> list_temp = new ArrayList<>();
     private Handler readerHandler = new ReaderHandler();
@@ -67,6 +70,9 @@ public class Activity_RFID extends BaseActivity {
         setContentView(R.layout.activity_rfid);
         ButterKnife.bind(this);
         reader.reg_handler(readerHandler);
+        SetTableLayout(tableLayout);
+        SetHeader(header);
+        SetHeaderTitle(headerTitle);
     }
 
     @Override
@@ -129,7 +135,9 @@ public class Activity_RFID extends BaseActivity {
             try {
                 if (msg.what == reader.msgreadepc) {
 //                    chaxun.getEditTextView().setText(msg.obj.toString());
+                    epc.SetText(msg.obj.toString());
                     ReaderEvent();
+                    reader.Clean();
                 }
                 if (msg.what == reader.readover) {
                     Log.e("test", "readerover");
@@ -141,16 +149,21 @@ public class Activity_RFID extends BaseActivity {
     }
 
     private void ReaderEvent() {
-        Cursor cursor = sqLiteDatabase.rawQuery("Select * from rMaterielInfo where EPC = '" + epc.getText() + "'", null);
-        if (cursor.getCount() != 0) {
-            ShowErrMsgDialog("此标签已经存在绑定记录！");
-        } else {
-            String temp = bianma.getText() + "○" + epc.getText();
-            list_temp.add(temp);
-            firstRowAsTitle(list_temp);
-            SetFocus(bianma.getEditTextView());
+        if(!list_rfid.contains(bianma.getText())){
+            Cursor cursor = sqLiteDatabase.rawQuery("Select * from rMaterielInfo where EPC = '" + epc.getText() + "'", null);
+            if (cursor.getCount() != 0) {
+                ShowErrMsgDialog("当前RFID已在数据库中被绑定！");
+            } else {
+                String temp = bianma.getText() + "○" + epc.getText();
+                list_temp.add(temp);
+                firstRowAsTitle(list_temp);
+                SetFocus(bianma.getEditTextView());
+                list_rfid.add(epc.getText());
+            }
+            cursor.close();
+        }else{
+            ShowErrMsgDialog("当前RFID已在列表中被绑定！");
         }
-        cursor.close();
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -160,9 +173,14 @@ public class Activity_RFID extends BaseActivity {
                     Scanner.Read();
                     break;
                 case 221:
-                    reader.InventoryLables();
+                    if(bianma.getText().isEmpty()){
+                        ShowWarmMsgDialog("请首先扫描条码！");
+                    }else{
+                        reader.InventoryLables();
+                    }
                     break;
                 case 4:
+                    android.os.Process.killProcess(android.os.Process.myPid());
                     finish();
                     break;
             }
@@ -193,24 +211,28 @@ public class Activity_RFID extends BaseActivity {
 
     @Override
     public void ScannerEvent() {
-        Cursor cursor = sqLiteDatabase.rawQuery("select * from rMaterielInfo where mcode = '" + bianma.getText() + "'", null);
-        while (cursor.moveToNext()) {
-            if (!cursor.getString(cursor.getColumnIndex("EPC")).isEmpty()) {
-                ShowErrMsgDialog("此条码已经绑定RFID！");
-            } else {
-                stmingchen = cursor.getString(cursor.getColumnIndex("MaterielName"));
-                stleixin = cursor.getString(cursor.getColumnIndex("MaterielKind"));
-                stchengben = cursor.getString(cursor.getColumnIndex("CostCenter"));
-                stquyu = cursor.getString(cursor.getColumnIndex("areaname"));
+        if(!list_barcode.contains(epc.getText())){
+            Cursor cursor = sqLiteDatabase.rawQuery("select * from rMaterielInfo where mcode = '" + bianma.getText() + "'", null);
+            while (cursor.moveToNext()) {
+                if (!cursor.getString(cursor.getColumnIndex("EPC")).isEmpty()) {
+                    //ShowErrMsgDialog("当前资产在数据库中已经存在绑定记录！");
+                } else {
+                    stmingchen = cursor.getString(cursor.getColumnIndex("MaterielName"));
+                    stleixin = cursor.getString(cursor.getColumnIndex("MaterielKind"));
+                    stchengben = cursor.getString(cursor.getColumnIndex("CostCenter"));
+                    stquyu = cursor.getString(cursor.getColumnIndex("areaname"));
 //            stzerenren = cursor.getString(cursor.getColumnIndex("resman"));
 //            stshiyongren = cursor.getString(cursor.getColumnIndex("ownername"));
 //            stchuchang = cursor.getString(cursor.getColumnIndex("productsn"));
 //            stbeizhu = cursor.getString(cursor.getColumnIndex("newremark"));
-                SetScreenData();
-                SetFocus(epc.getEditTextView());
+                    SetScreenData();
+                    list_barcode.add(bianma.getText());
+                    SetFocus(epc.getEditTextView());
+                }
             }
+            cursor.close();
+        }else{
+            ShowErrMsgDialog("");
         }
-        cursor.close();
-
     }
 }

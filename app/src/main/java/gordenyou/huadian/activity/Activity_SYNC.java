@@ -49,6 +49,9 @@ public class Activity_SYNC extends BaseActivity implements View.OnClickListener 
     TextView jindu;
     int progress = 0;
 
+    int uploadnum;
+    int uploadprogress;
+    int count;
     MySQLiteOpenHelper dbhelper;
     SQLiteDatabase sqLiteDatabase;
 
@@ -661,13 +664,16 @@ public class Activity_SYNC extends BaseActivity implements View.OnClickListener 
 
     private void SaveSharePreferences() {
         SetValues("time_download", CommonMethod.getTime());
+        SetValues("time_upload", "");
         Set<String> changelist = new HashSet<>();
         SetValues("changelist", changelist);
         //各个表数据变化的记录
-        SetValues("checklistinfo", changelist);
         SetValues("AssetBorrowList", changelist);
         SetValues("AssetBorrowListDetail", changelist);
-        SetValues("AssetReturnDetail", changelist);
+        SetValues("RFID", changelist);
+        SetValues("ZCBG", changelist);
+        SetValues("ZCGH", changelist);
+        SetValues("ZCPD", changelist);
     }
 
     /*
@@ -692,34 +698,114 @@ public class Activity_SYNC extends BaseActivity implements View.OnClickListener 
         }
     }
 
-    private void getDataUpload() {
-        Set<String> changelist = getSetValues("changelist");
-        dbhelper = new MySQLiteOpenHelper(getBaseContext(), "temp_data.db", null, 1);
-        sqLiteDatabase = dbhelper.getWritableDatabase();
-        for (String list : changelist) {
-            switch (list) {
-                case "RFID":
-                    UploadData(list, getRFIDInfo(), 12);
-                    break;
-                case "ZCBG":
-                    UploadData(list, getZCBGInfo(), 13);
-                    break;
-                case "ZCGH":
-                    UploadData(list, getZCGHInfo(), 14);
-                    break;
-                case "ZCPD":
-                    UploadData(list, getZCPDInfo(), 15);
-                    break;
-                case "AssetBorrowListDetail":
-                    UploadData(list, getAssetBorrowListDetialInfo(), 11);
-                    break;
-                case "AssetBorrowList":
-                    UploadData(list, getAssetBorrowListInfo(), 10);
-                    break;
-            }
+    @Override
+    public void SuccessEvent(int m) {
+        int increase = 100 / uploadnum;
+        switch (m) {
+            case 10:
+                uploadprogress += increase;
+                mProgressBar.setProgress(uploadprogress);
+                jindu.setText(uploadprogress);
+                count++;
+                break;
+            case 11:
+                uploadprogress += increase;
+                mProgressBar.setProgress(uploadprogress);
+                jindu.setText(uploadprogress);
+                count++;
+                break;
+            case 12:
+                uploadprogress += increase;
+                mProgressBar.setProgress(uploadprogress);
+                jindu.setText(uploadprogress);
+                count++;
+                break;
+            case 13:
+                uploadprogress += increase;
+                mProgressBar.setProgress(uploadprogress);
+                jindu.setText(uploadprogress);
+                count++;
+                break;
+            case 14:
+                uploadprogress += increase;
+                mProgressBar.setProgress(uploadprogress);
+                jindu.setText(uploadprogress);
+                count++;
+                break;
+            case 15:
+                uploadprogress += increase;
+                mProgressBar.setProgress(uploadprogress);
+                jindu.setText(uploadprogress);
+                count++;
+                break;
         }
-        //ProgressDialogShow(this, "同步中...", "请等待！");
+        if(count == uploadnum){
+            dialog.dismiss();
+            ShowWarmMsgDialog("数据上传完毕！");
+            SetValues("time_upload", CommonMethod.getTime());
+            SetTime("time_upload", linear_upload, time_upload);
+        }
+    }
 
+    private void getDataUpload() {
+        showLayoutDialog(this, "上传进度");
+        Set<String> changelist = getSetValues("changelist");
+        uploadnum = changelist.size();
+        new UploadDataAsync().execute(changelist);
+    }
+
+    private class UploadDataAsync extends AsyncTask<Set<String>, Integer, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dbhelper = new MySQLiteOpenHelper(getBaseContext(), "temp_data.db", null, 1);
+            sqLiteDatabase = dbhelper.getWritableDatabase();
+        }
+
+        @Override
+        protected Void doInBackground(Set<String>... params) {
+            for (String list : params[0]) {
+                switch (list) {
+                    case "RFID":
+                        UploadData(list, getRFIDInfo(), 12);
+                        break;
+                    case "ZCBG":
+                        UploadData(list, getZCBGInfo(), 13);
+                        break;
+                    case "ZCGH":
+                        UploadData(list, getZCGHInfo(), 14);
+                        break;
+                    case "ZCPD":
+                        UploadData(list, getZCPDInfo(), 15);
+                        break;
+                    case "AssetBorrowListDetail":
+                        UploadData(list, getAssetBorrowListDetialInfo(), 11);
+                        break;
+                    case "AssetBorrowList":
+                        UploadData(list, getAssetBorrowListInfo(), 10);
+                        break;
+                }
+            }
+            return null;
+        }
+
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            super.onProgressUpdate(values);
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            dialog.dismiss();
+        }
     }
 
     private void UploadData(String list, String data, int m) {
@@ -793,7 +879,7 @@ public class Activity_SYNC extends BaseActivity implements View.OnClickListener 
         StringBuilder list = new StringBuilder();
         for (String listID : ListDetail) {
             Cursor cursor = sqLiteDatabase.rawQuery("select * from rMaterielInfo where mcode = '" + listID + "'", null);
-            String[] values = new String[]{"EPC"};
+            String[] values = new String[]{"mcode", "EPC"};
 
             while (cursor.moveToNext()) {
                 StringBuilder temp = new StringBuilder();
@@ -822,7 +908,7 @@ public class Activity_SYNC extends BaseActivity implements View.OnClickListener 
         StringBuilder list = new StringBuilder();
         for (String listID : ListDetail) {
             Cursor cursor = sqLiteDatabase.rawQuery("select * from rMaterielInfo where mcode = '" + listID + "'", null);
-            String[] values = new String[]{"newres", "newowner", "newsn", "newremark", "newfangjian", "newquyu"};
+            String[] values = new String[]{"mcode", "newres", "newowner", "newsn", "newremark", "newfangjian", "newquyu"};
 
             while (cursor.moveToNext()) {
                 StringBuilder temp = new StringBuilder();
@@ -880,7 +966,7 @@ public class Activity_SYNC extends BaseActivity implements View.OnClickListener 
         StringBuilder list = new StringBuilder();
         for (String listID : ListDetail) {
             Cursor cursor = sqLiteDatabase.rawQuery("select * from rCheckListInfo where AssetID = '" + listID + "'", null);
-            String[] values = new String[]{"CheckListID","NewCompanyCode", "NewCostCenter", "NewLocation", "NewUser", "flags", "newroom", "newremark"};
+            String[] values = new String[]{"CheckListID", "NewCompanyCode", "NewCostCenter", "NewLocation", "NewUser", "flags", "newroom", "newremark"};
 
             while (cursor.moveToNext()) {
                 StringBuilder temp = new StringBuilder();
@@ -914,7 +1000,7 @@ public class Activity_SYNC extends BaseActivity implements View.OnClickListener 
             WebParams.Clear();
             WebParams.SetSubOperationFunction("DownloadList_Gorden");
             WebParams.Setparam1("rCheckListInfo");
-            showLayoutDialog(this, "下载数据");
+            showLayoutDialog(this, "下载进度");
             WebHttpRequest(1);
         } else {
             ShowWarmMsgDialog("PDA当前还有数据未上传数据库，请先上传数据！");
@@ -928,6 +1014,5 @@ public class Activity_SYNC extends BaseActivity implements View.OnClickListener 
         dialog = new AlertDialog.Builder(context).setTitle(title).setView(dialogview).setCancelable(false)
                 .create();
         dialog.show();
-
     }
 }

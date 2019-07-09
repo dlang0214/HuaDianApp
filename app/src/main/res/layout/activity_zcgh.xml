@@ -42,8 +42,7 @@
 
         <tableLayout.FreeScrollView
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            >
+            android:layout_height="150dp">
 
             <tableLayout.TableLayout
                 android:id="@+id/zcgh_table_jieyong"
@@ -61,40 +60,6 @@
                 app:tableTextSize="14dp" />
 
         </tableLayout.FreeScrollView>
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="6dp"
-            android:background="@color/colorAccent" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorPrimary"
-            android:layout_gravity="center_horizontal"
-            android:text="归还列表" />
-
-        <tableLayout.FreeScrollView
-            android:layout_width="match_parent"
-            android:layout_height="150dp">
-
-            <tableLayout.TableLayout
-                android:id="@+id/zcgh_table_guihuan"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@android:color/white"
-                app:backgroundColorSelected="@color/colorAccent"
-                app:headerColor="@color/colorPrimary"
-                app:tableColumnPadding="8dp"
-                app:tableDividerColor="#ddd"
-                app:tableDividerSize="1dp"
-                app:tableRowHeight="30dp"
-                app:tableTextColor="#333"
-                app:tableTextColorSelected="#fff"
-                app:tableTextSize="14dp" />
-
-        </tableLayout.FreeScrollView>
-
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="1dp"
@@ -141,6 +106,45 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:scannerbuttonname="归还"
+        android:layout_marginBottom="6dp"
         app:scannerhint="请输入归还人"
         app:scannertitle="归  还  人" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorAccent" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimary"
+        android:layout_gravity="center_horizontal"
+        android:text="归还列表" />
+
+    <tableLayout.FreeScrollView
+        android:layout_width="match_parent"
+        android:layout_height="150dp">
+
+        <tableLayout.TableLayout
+            android:id="@+id/zcgh_table_guihuan"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            app:backgroundColorSelected="@color/colorAccent"
+            app:headerColor="@color/colorPrimary"
+            app:tableColumnPadding="8dp"
+            app:tableDividerColor="#ddd"
+            app:tableDividerSize="1dp"
+            app:tableRowHeight="30dp"
+            app:tableTextColor="#333"
+            app:tableTextColorSelected="#fff"
+            app:tableTextSize="14dp" />
+
+    </tableLayout.FreeScrollView>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorAccent" />
 </LinearLayout>

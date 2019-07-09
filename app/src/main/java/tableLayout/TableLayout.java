@@ -245,12 +245,14 @@ public class TableLayout extends LinearLayout implements TableColumn.Callback {
     public void ClickEvent() {
         String headertitle = BaseActivity.getHeadertitle();
         int m = BaseActivity.m;
-        switch (headertitle){
-            case "资产盘点":
-                if(barcode != null && m == 4){
-                    Activity_ZCPD activity_zcpd = new Activity_ZCPD();
-                    activity_zcpd.showLayoutDialog(getContext(), barcode, Activity_ZCPD.str_danhao);
-                }
+        if(headertitle != null){
+            switch (headertitle){
+                case "资产盘点":
+                    if(barcode != null && m == 4){
+                        Activity_ZCPD activity_zcpd = new Activity_ZCPD();
+                        activity_zcpd.showLayoutDialog(getContext(), barcode, Activity_ZCPD.str_danhao);
+                    }
+            }
         }
     }
 

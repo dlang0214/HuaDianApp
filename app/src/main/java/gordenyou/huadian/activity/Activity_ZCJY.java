@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -74,6 +75,7 @@ public class Activity_ZCJY extends BaseActivity {
     @Override
     public void LogicMethod() {
         bumen.setSpinnerList(this, UserInfo.deptInfo);
+        yujishijian.getEditText().setInputType(InputType.TYPE_CLASS_DATETIME);
         jieyongren.getButton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -144,8 +146,7 @@ public class Activity_ZCJY extends BaseActivity {
                 }
             }
             sqLiteDatabase.setTransactionSuccessful();
-            SetValues("AssetBorrowList", BorrowListDetail);
-            SetValues("AssetBorrowListDetail", ListDetail);
+            SetValues("AssetBorrowListDetail", BorrowListDetail);
             addList("AssetBorrowListDetail");
             ClearData();
             tiaoma.SetText("");
@@ -170,6 +171,7 @@ public class Activity_ZCJY extends BaseActivity {
         contentValues.put("EditDate", CommonMethod.getTime());
         if (sqLiteDatabase.insertOrThrow("AssetBorrowList", null, contentValues) != -1) {
             ListDetail.add(BorrowID);
+            SetValues("AssetBorrowList", ListDetail);
             addList("AssetBorrowList");
         }
     }

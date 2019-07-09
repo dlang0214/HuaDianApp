@@ -2,7 +2,6 @@ package gordenyou.huadian.activity;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.hardware.barcode.Scanner;
 import android.media.AudioFormat;
@@ -137,10 +136,6 @@ public abstract class BaseActivity extends AppCompatActivity implements Validato
         Thread thread = new Thread(run1);
         thread.start();
         super.onStart();
-    }
-
-    public void ProgressDialogShow(Context context, String title, String message){
-        progressDialog = ProgressDialog.show(context, title, message, true, false);
     }
 
     public void SetEdittext(EditText editText) {
