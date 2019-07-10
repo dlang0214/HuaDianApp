@@ -966,7 +966,7 @@ public class Activity_SYNC extends BaseActivity implements View.OnClickListener 
         StringBuilder list = new StringBuilder();
         for (String listID : ListDetail) {
             Cursor cursor = sqLiteDatabase.rawQuery("select * from rCheckListInfo where AssetID = '" + listID + "'", null);
-            String[] values = new String[]{"CheckListID", "NewCompanyCode", "NewCostCenter", "NewLocation", "NewUser", "flags", "newroom", "newremark"};
+            String[] values = new String[]{"CheckID", "AssetID", "NewCompanyCode", "NewCostCenter", "NewLocation", "NewUser", "flags", "newroom", "newremark"};
 
             while (cursor.moveToNext()) {
                 StringBuilder temp = new StringBuilder();

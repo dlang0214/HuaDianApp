@@ -44,8 +44,9 @@ public class Activity_ZCGH extends BaseActivity {
 
     MySQLiteOpenHelper dbhelper;
     SQLiteDatabase sqLiteDatabase;
-    Set<String> listDetail = new HashSet<>();  //记录变化的单据
-    Set<String> checklist = new HashSet<>();//记录当前表格中的条码
+    Set<String> listDetail;  //记录变化的单据
+    Set<String> checklist;//记录当前表格中的条码
+    Set<String> zcjy_change = new HashSet<>();
 
     ArrayList<String> temp_jieyonglist = new ArrayList<>();
     ArrayList<String> temp_guihuanlist = new ArrayList<>();
@@ -120,6 +121,7 @@ public class Activity_ZCGH extends BaseActivity {
                         if (sqLiteDatabase.insertOrThrow("AssetReturnDetail", null, contentValues) != -1 &&
                                 sqLiteDatabase.update("AssetBorrowListDetail",contentValues1, "BorrowListID = ? and AssetID = ?" , new String[]{temp[1], temp[2]}) == 1) {
                             listDetail.add(temp[1]);
+                            zcjy_change.add(temp[1]);
                         }
                     }
                     sqLiteDatabase.setTransactionSuccessful();
@@ -135,6 +137,8 @@ public class Activity_ZCGH extends BaseActivity {
                     jieyongren.SetText("");
                     SetValues("ZCGH", listDetail);
                     addList("ZCGH");
+                    SetValues("ZCJY", zcjy_change);
+                    addList("ZCJY");
                     ShowWarmMsgDialog("归还成功！");
                 } catch (Exception e) {
                     ShowErrMsgDialog(e.getMessage());
@@ -151,6 +155,8 @@ public class Activity_ZCGH extends BaseActivity {
         sqLiteDatabase = dbhelper.getWritableDatabase();
         listDetail = getSetValues("ZCGH");
         listDetail = new HashSet<>();
+        zcjy_change = getSetValues("ZCJY");
+        zcjy_change = new HashSet<>();
     }
 
     @Override

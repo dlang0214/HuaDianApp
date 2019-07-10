@@ -69,12 +69,15 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_marginBottom="6dp">
 
             <Button
                 android:id="@+id/zcpd_kaishi"
                 android:layout_width="wrap_content"
-                android:layout_height="36dp"
+                android:layout_height="30dp"
                 android:layout_margin="3dp"
                 android:layout_weight="1"
                 android:background="@drawable/butttonstyle"
@@ -84,7 +87,7 @@
             <Button
                 android:id="@+id/zcpd_jieshu"
                 android:layout_width="wrap_content"
-                android:layout_height="36dp"
+                android:layout_height="30dp"
                 android:layout_margin="3dp"
                 android:layout_weight="1"
                 android:background="@drawable/butttonstyle"
@@ -95,7 +98,7 @@
             <Button
                 android:id="@+id/zcpd_weizai"
                 android:layout_width="wrap_content"
-                android:layout_height="36dp"
+                android:layout_height="30dp"
                 android:layout_margin="3dp"
                 android:layout_weight="1"
                 android:background="@drawable/butttonstyle"
@@ -105,9 +108,9 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginLeft="12dp"
                 android:layout_weight="1"
-                android:layout_gravity="center"
                 android:orientation="horizontal">
 
                 <TextView
@@ -134,11 +137,10 @@
             android:id="@+id/zcpd_saomiao"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="invisible"
             app:buttonvisable="false"
             app:scannerbuttonname="扫描"
-            app:scannerhint="请输入或扫描资产条码"
-            app:scannertitle="扫描盘点" />
+            app:scannerhint="展示当前条码或RFID"
+            app:scannertitle="盘点信息" />
 
         <ImageView
             android:layout_width="match_parent"
@@ -166,11 +168,21 @@
                 android:textColor="@color/colorPrimary" />
         </LinearLayout>
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorAccent" />
+
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorAccent" />
 
             <LinearLayout
                 android:id="@+id/zcpd_radiogroup"
@@ -257,6 +269,11 @@
                 <!--android:textColor="#ef8000"-->
                 <!--android:text="7"/>-->
             </LinearLayout>
+
+            <ImageView
+                android:layout_width="1dp"
+                android:layout_height="210dp"
+                android:background="@color/colorAccent" />
 
             <LinearLayout
                 android:id="@+id/zcpd_linearlayout"
@@ -371,7 +388,7 @@
             <ImageView
                 android:layout_width="1dp"
                 android:layout_height="30dp"
-                android:background="#000" />
+                android:background="@color/colorAccent" />
 
             <Button
                 android:id="@+id/zcpd_shangyiye"
@@ -386,7 +403,7 @@
             <ImageView
                 android:layout_width="1dp"
                 android:layout_height="30dp"
-                android:background="#000" />
+                android:background="@color/colorAccent" />
 
             <Button
                 android:id="@+id/zcpd_xiayiye"
@@ -410,13 +427,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
         android:layout_marginBottom="3dp"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/zcpd_weipandian"
             android:layout_width="0dp"
-            android:layout_height="36dp"
+            android:layout_height="30dp"
             android:layout_marginLeft="3dp"
             android:layout_marginRight="3dp"
             android:layout_weight="1"
@@ -426,7 +445,7 @@
         <Button
             android:id="@+id/zcpd_yipandian"
             android:layout_width="0dp"
-            android:layout_height="36dp"
+            android:layout_height="30dp"
             android:layout_marginLeft="3dp"
             android:layout_marginRight="3dp"
             android:layout_weight="1"
@@ -436,7 +455,7 @@
         <Button
             android:id="@+id/zcpd_chayi"
             android:layout_width="0dp"
-            android:layout_height="36dp"
+            android:layout_height="30dp"
             android:layout_marginLeft="3dp"
             android:layout_marginRight="3dp"
             android:layout_weight="1"
@@ -446,7 +465,7 @@
         <Button
             android:id="@+id/zcpd_yiqueren"
             android:layout_width="0dp"
-            android:layout_height="36dp"
+            android:layout_height="30dp"
             android:layout_marginLeft="3dp"
             android:layout_marginRight="3dp"
             android:layout_weight="1"
@@ -456,7 +475,7 @@
         <Button
             android:id="@+id/zcpd_queren"
             android:layout_width="0dp"
-            android:layout_height="36dp"
+            android:layout_height="30dp"
             android:layout_marginLeft="3dp"
             android:layout_marginRight="3dp"
             android:layout_weight="1"
