@@ -10,6 +10,7 @@
         android:id="@+id/zcpd_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:headerbuttonvisable="false"
         app:headerbuttonname="完成盘点"
         app:headertitle="资产盘点" />
 

@@ -12,7 +12,6 @@ import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.EditText;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -21,6 +20,7 @@ import java.util.Set;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import gordenyou.huadian.R;
+import gordenyou.huadian.common.CommonMethod;
 import gordenyou.huadian.common.MySQLiteOpenHelper;
 import gordenyou.huadian.view.HeaderTitle;
 import gordenyou.huadian.view.ScannerView;
@@ -55,7 +55,8 @@ public class Activity_RFID extends BaseActivity {
 
     MySQLiteOpenHelper dbhelper;
     SQLiteDatabase sqLiteDatabase;
-    Set<String> list_change = new HashSet<>();
+    Set<String> list_change;
+    boolean change = false;
 
     Set<String> list_barcode = new HashSet<>();
     Set<String> list_rfid = new HashSet<>();
@@ -71,7 +72,6 @@ public class Activity_RFID extends BaseActivity {
         ButterKnife.bind(this);
         reader.reg_handler(readerHandler);
         SetTableLayout(tableLayout);
-        SetHeader(header);
         SetHeaderTitle(headerTitle);
     }
 
@@ -87,13 +87,30 @@ public class Activity_RFID extends BaseActivity {
                     contentValues.put("EPC", temp[1]);
                     if (sqLiteDatabase.update("rMaterielInfo", contentValues, "mcode = ?", new String[]{temp[0]}) == 1) {
                         sum++;
-                        list_change.add(i);
+                        list_change.add(temp[0]);
+                        change = true;
                     }
                 }
                 if (sum == count) {
                     ShowWarmMsgDialog("成功绑定" + sum + "条记录！");
-                    SetValues("RFID", list_change);
-                    addList("RFID");
+                    list_temp.clear();
+                    String[] noheader = new String[]{};
+                    SetHeader(noheader);
+                    firstRowAsTitle(list_temp);
+                }
+            }
+        });
+        epc.getButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (ReaderEvent()) {
+                    SetHeader(header);
+                    String temp = bianma.getText() + "○" + epc.getText();
+                    list_temp.add(temp);
+                    firstRowAsTitle(list_temp);
+                    CommonMethod.SetFocus(bianma.getEditTextView());
+                    list_rfid.add(epc.getText());
+                    list_barcode.add(bianma.getText());
                 }
             }
         });
@@ -104,14 +121,10 @@ public class Activity_RFID extends BaseActivity {
         dbhelper = new MySQLiteOpenHelper(getBaseContext(), "temp_data.db", null, 1);
         sqLiteDatabase = dbhelper.getWritableDatabase();
         list_change = getSetValues("RFID");
-        list_change = new HashSet<>();
+        list_change = new HashSet<>(list_change);
     }
 
-    private void SetFocus(EditText editText) {
-        editText.setFocusable(true);
-        editText.setFocusableInTouchMode(true);
-        editText.requestFocus();
-    }
+
 
     @Override
     protected void onPause() {
@@ -136,7 +149,6 @@ public class Activity_RFID extends BaseActivity {
                 if (msg.what == reader.msgreadepc) {
 //                    chaxun.getEditTextView().setText(msg.obj.toString());
                     epc.SetText(msg.obj.toString());
-                    ReaderEvent();
                     reader.Clean();
                 }
                 if (msg.what == reader.readover) {
@@ -148,22 +160,21 @@ public class Activity_RFID extends BaseActivity {
         }
     }
 
-    private void ReaderEvent() {
-        if(!list_rfid.contains(bianma.getText())){
+    private boolean ReaderEvent() {
+        if (!list_rfid.contains(epc.getText())) {
             Cursor cursor = sqLiteDatabase.rawQuery("Select * from rMaterielInfo where EPC = '" + epc.getText() + "'", null);
             if (cursor.getCount() != 0) {
                 ShowErrMsgDialog("当前RFID已在数据库中被绑定！");
+                epc.SetText("");
             } else {
-                String temp = bianma.getText() + "○" + epc.getText();
-                list_temp.add(temp);
-                firstRowAsTitle(list_temp);
-                SetFocus(bianma.getEditTextView());
-                list_rfid.add(epc.getText());
+                return true;
             }
             cursor.close();
-        }else{
+        } else {
             ShowErrMsgDialog("当前RFID已在列表中被绑定！");
+            epc.SetText("");
         }
+        return false;
     }
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -173,24 +184,23 @@ public class Activity_RFID extends BaseActivity {
                     Scanner.Read();
                     break;
                 case 221:
-                    if(bianma.getText().isEmpty()){
+                    if (bianma.getText().isEmpty()) {
                         ShowWarmMsgDialog("请首先扫描条码！");
-                    }else{
+                    } else {
                         reader.InventoryLables();
                     }
                     break;
                 case 4:
-                    android.os.Process.killProcess(android.os.Process.myPid());
+                    if(change){
+                        SetValues("RFID", list_change);
+                        addList("RFID");
+                    }
+//                    android.os.Process.killProcess(android.os.Process.myPid());
                     finish();
                     break;
             }
         }
         return true;
-    }
-
-    private void getScreenData() {
-        stbianma = bianma.getText();
-        stepc = epc.getText();
     }
 
     private void SetScreenData() {
@@ -211,11 +221,12 @@ public class Activity_RFID extends BaseActivity {
 
     @Override
     public void ScannerEvent() {
-        if(!list_barcode.contains(epc.getText())){
+        if (!list_barcode.contains(bianma.getText())) {
             Cursor cursor = sqLiteDatabase.rawQuery("select * from rMaterielInfo where mcode = '" + bianma.getText() + "'", null);
             while (cursor.moveToNext()) {
                 if (!cursor.getString(cursor.getColumnIndex("EPC")).isEmpty()) {
-                    //ShowErrMsgDialog("当前资产在数据库中已经存在绑定记录！");
+                    ShowErrMsgDialog("数据库中已经存在此资产绑定记录！");
+                    bianma.SetText("");
                 } else {
                     stmingchen = cursor.getString(cursor.getColumnIndex("MaterielName"));
                     stleixin = cursor.getString(cursor.getColumnIndex("MaterielKind"));
@@ -226,13 +237,13 @@ public class Activity_RFID extends BaseActivity {
 //            stchuchang = cursor.getString(cursor.getColumnIndex("productsn"));
 //            stbeizhu = cursor.getString(cursor.getColumnIndex("newremark"));
                     SetScreenData();
-                    list_barcode.add(bianma.getText());
-                    SetFocus(epc.getEditTextView());
+                    CommonMethod.SetFocus(epc.getEditTextView());
                 }
             }
             cursor.close();
-        }else{
-            ShowErrMsgDialog("");
+        } else {
+            ShowErrMsgDialog("当前列表已存在此资产绑定记录！");
+            bianma.SetText("");
         }
     }
 }

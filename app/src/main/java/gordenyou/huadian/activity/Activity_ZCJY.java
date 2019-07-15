@@ -3,8 +3,10 @@ package gordenyou.huadian.activity;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.hardware.barcode.Scanner;
 import android.os.Bundle;
 import android.text.InputType;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -53,8 +55,9 @@ public class Activity_ZCJY extends BaseActivity {
     MySQLiteOpenHelper dbhelper;
     SQLiteDatabase sqLiteDatabase;
     ArrayList<String> temp_list = new ArrayList<>();
-    Set<String> BorrowListDetail = new HashSet<>();
-    Set<String> ListDetail = new HashSet<>();
+    Set<String> BorrowListDetail;
+    Set<String> ListDetail;
+    boolean change = false;
     Set<String> checklist = new HashSet<>();
 
     String str_bumen, str_tiaoma, str_mingcheng, str_leixing, str_jieyongren, str_time, str_jiluren, str_jieyongleixing = "", str_yujishijian;
@@ -87,18 +90,31 @@ public class Activity_ZCJY extends BaseActivity {
                     if (checklist.contains(str_tiaoma)) {
                         ShowWarmMsgDialog("表格中已存在此资产借用记录!");
                     } else {
-                        str_mingcheng = mingchen.getText();
-                        str_leixing = leixing.getText();
-                        int_shuliang = shuliang.getNumber();
                         str_jieyongren = jieyongren.getText();
-                        str_jiluren = UserInfo.USERNAME;
-                        str_time = CommonMethod.getTime();
-                        str_yujishijian = yujishijian.getText();
-                        String temp = str_jieyongren + "○" + str_bumen + "○" + str_tiaoma + "○" + str_mingcheng + "○" +
-                                str_leixing + "○" + int_shuliang + "○" + str_jieyongleixing + "○" + str_jiluren + "○" + str_time + "○" + str_yujishijian;
-                        temp_list.add(temp);
-                        checklist.add(str_tiaoma);
-                        firstRowAsTitle(temp_list);
+                        if(str_jieyongren.equals("")){
+                            ShowWarmMsgDialog("请输入借用人！");
+                            CommonMethod.SetFocus(jieyongren.getEditTextView());
+                        }else {
+                            str_yujishijian = yujishijian.getText();
+                            if(str_yujishijian.equals("")){
+                                ShowWarmMsgDialog("请输入预计借用时间！");
+                                CommonMethod.SetFocus(yujishijian.getEditText());
+                            }else{
+                                str_mingcheng = mingchen.getText();
+                                str_leixing = leixing.getText();
+                                int_shuliang = shuliang.getNumber();
+                                str_jiluren = UserInfo.USERNAME;
+                                str_time = CommonMethod.getTime();
+                                String temp = str_jieyongren + "○" + str_bumen + "○" + str_tiaoma + "○" + str_mingcheng + "○" +
+                                        str_leixing + "○" + int_shuliang + "○" + str_jieyongleixing + "○" + str_jiluren + "○" + str_time + "○" + str_yujishijian;
+                                temp_list.add(temp);
+                                checklist.add(str_tiaoma);
+                                firstRowAsTitle(temp_list);
+                                CommonMethod.CloseKeyboard(view);
+                            }
+
+                        }
+
                     }
                 }
             }
@@ -107,8 +123,12 @@ public class Activity_ZCJY extends BaseActivity {
         headerTitle.getRightbutton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                InsertBorrowList();
-                InsertBorrowListDetail();
+                if(temp_list.isEmpty()){
+                    ShowErrMsgDialog("请先添加借用资产！");
+                }else {
+                    InsertBorrowList();
+                    InsertBorrowListDetail();
+                }
             }
         });
     }
@@ -121,6 +141,27 @@ public class Activity_ZCJY extends BaseActivity {
             leixing.SetText(cursor.getString(cursor.getColumnIndex("MaterielKind")));
         }
         cursor.close();
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (event.getRepeatCount() == 0) {
+            switch (keyCode) {
+                case 221:
+                case 220:
+                    Scanner.Read();
+                    break;
+                case 4:
+                    if(change){
+                        SetValues("AssetBorrowListDetail", BorrowListDetail);
+                        addList("AssetBorrowListDetail");
+                        SetValues("AssetBorrowList", ListDetail);
+                        addList("AssetBorrowList");
+                    }
+                    finish();
+                    break;
+            }
+        }
+        return true;
     }
 
     private void InsertBorrowListDetail() {
@@ -143,17 +184,16 @@ public class Activity_ZCJY extends BaseActivity {
                 contentValues.put("State", 0); //0为被借用，1位已归还。
                 if (sqLiteDatabase.insertOrThrow("AssetBorrowListDetail", null, contentValues) != -1) {
                     BorrowListDetail.add(BorrowID);
+                    change = true;
                 }
             }
             sqLiteDatabase.setTransactionSuccessful();
-            SetValues("AssetBorrowListDetail", BorrowListDetail);
-            addList("AssetBorrowListDetail");
+
             ClearData();
             tiaoma.SetText("");
             mingchen.SetText("");
             leixing.SetText("");
             jieyongren.SetText("");
-
             ShowWarmMsgDialog("借用成功！");
         } catch (Exception e) {
             ShowErrMsgDialog(e.getMessage());
@@ -171,8 +211,7 @@ public class Activity_ZCJY extends BaseActivity {
         contentValues.put("EditDate", CommonMethod.getTime());
         if (sqLiteDatabase.insertOrThrow("AssetBorrowList", null, contentValues) != -1) {
             ListDetail.add(BorrowID);
-            SetValues("AssetBorrowList", ListDetail);
-            addList("AssetBorrowList");
+            change = true;
         }
     }
 
@@ -181,9 +220,9 @@ public class Activity_ZCJY extends BaseActivity {
         dbhelper = new MySQLiteOpenHelper(getBaseContext(), "temp_data.db", null, 1);
         sqLiteDatabase = dbhelper.getWritableDatabase();
         ListDetail = getSetValues("AssetBorrowList");
-        ListDetail = new HashSet<>();
+        ListDetail = new HashSet<>(ListDetail);
         BorrowListDetail = getSetValues("AssetBorrowListDetail");
-        BorrowListDetail = new HashSet<>();
+        BorrowListDetail = new HashSet<>(BorrowListDetail);
     }
 
     @Override

@@ -10,7 +10,7 @@
         android:id="@+id/rfid_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:headerbuttonname="绑定RFID"
+        app:headerbuttonname="完成绑定"
         app:headertitle="资产RFID绑定" />
 
     <!--<gordenyou.huadian.view.SpinnerView-->
@@ -94,8 +94,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
-        app:buttonvisable="false"
-        app:scannerbuttonname="读取"
+        app:buttonvisable="true"
+        app:scannerbuttonname="绑定"
         app:scannerhint="请输入或读取RFID"
         app:scannertitle="RFID编号" />
 

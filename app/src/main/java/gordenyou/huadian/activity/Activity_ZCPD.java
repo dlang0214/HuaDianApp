@@ -163,7 +163,7 @@ public class Activity_ZCPD extends BaseActivity implements View.OnClickListener 
         dbhelper = new MySQLiteOpenHelper(getBaseContext(), "temp_data.db", null, 1);
         sqLiteDatabase = dbhelper.getWritableDatabase();
         list_change = getSetValues("ZCPD");
-        list_change = new HashSet<>();
+        list_change = new HashSet<>(list_change);
     }
 
     @Override
@@ -282,10 +282,10 @@ public class Activity_ZCPD extends BaseActivity implements View.OnClickListener 
                     break;
                 case 4:
                     if(change){
-                        SetValues("rCheckListInfo", list_change);
-                        addList("rCheckListInfo");
+                        SetValues("ZCPD", list_change);
+                        addList("ZCPD");
                     }
-                    android.os.Process.killProcess(android.os.Process.myPid());
+//                    android.os.Process.killProcess(android.os.Process.myPid());
                     finish();
                     break;
             }
@@ -777,6 +777,7 @@ public class Activity_ZCPD extends BaseActivity implements View.OnClickListener 
                 break;
             case R.id.zcpd_weizai:
                 tablename.setText("未在盘点单");
+                radiogroup.setVisibility(View.GONE);
                 ArrayList<String> list_weizai = new ArrayList<>();
                 String[] newheader = new String[]{"资产条码", "资产名称", "资产类型", "成本中心", "所在区域", "负责人", "使用人"};
                 String[] values = new String[]{"mcode", "MaterielName", "MaterielKind", "CostCenter", "areaname", "resman", "ownername"};
@@ -919,7 +920,7 @@ public class Activity_ZCPD extends BaseActivity implements View.OnClickListener 
         @Override
         protected Void doInBackground(List<Set<String>>... params) {
             for(String i: params[0].get(0)){//条码处理
-                Cursor cursor = sqLiteDatabase.rawQuery("Select * from rCheckListInfo where CheckListID = '"
+                Cursor cursor = sqLiteDatabase.rawQuery("Select * from rCheckListInfo where CheckID = '"
                         + str_danhao +"' and AssetID = '" + i + "'", null);
                 if(cursor.getCount() == 0){
                     list_out.add(i);
@@ -945,7 +946,7 @@ public class Activity_ZCPD extends BaseActivity implements View.OnClickListener 
                     while(cursor.moveToNext()){
                         assetid = cursor.getString(cursor.getColumnIndex("mcode"));
                     }
-                    Cursor cursor1 = sqLiteDatabase.rawQuery("Select * from rCheckListInfo where CheckListID = '"
+                    Cursor cursor1 = sqLiteDatabase.rawQuery("Select * from rCheckListInfo where CheckID = '"
                             + str_danhao +"' and AssetID = '" + assetid + "'", null);
                     if(cursor1.getCount() == 0){
                         list_out.add(assetid);

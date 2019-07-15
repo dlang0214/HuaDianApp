@@ -177,7 +177,7 @@ public abstract class BaseActivity extends AppCompatActivity implements Validato
 
     public void addList(String value){
         Set<String> changelist = getSetValues("changelist");
-        changelist = new HashSet<>();
+        changelist = new HashSet<>(changelist);
         changelist.add(value);
         SetValues("changelist", changelist);
     }

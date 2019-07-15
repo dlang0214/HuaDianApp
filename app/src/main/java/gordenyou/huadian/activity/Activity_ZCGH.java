@@ -3,7 +3,9 @@ package gordenyou.huadian.activity;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.hardware.barcode.Scanner;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -44,9 +46,10 @@ public class Activity_ZCGH extends BaseActivity {
 
     MySQLiteOpenHelper dbhelper;
     SQLiteDatabase sqLiteDatabase;
-    Set<String> listDetail;  //记录变化的单据
-    Set<String> checklist;//记录当前表格中的条码
-    Set<String> zcjy_change = new HashSet<>();
+    Set<String> zcgh_change;  //记录变化的单据
+    Set<String> zcjy_change;
+    Set<String> checklist = new HashSet<>();//记录当前表格中的条码
+    boolean change = false;
 
     ArrayList<String> temp_jieyonglist = new ArrayList<>();
     ArrayList<String> temp_guihuanlist = new ArrayList<>();
@@ -93,75 +96,102 @@ public class Activity_ZCGH extends BaseActivity {
                         }
                     }
                 }
+                CommonMethod.CloseKeyboard(view);
             }
         });
 
         header.getRightbutton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    sqLiteDatabase.beginTransaction();
-                    for (String i : temp_guihuanlist) {
-                        String[] temp = i.split("○");
-                        ContentValues contentValues = new ContentValues();
-                        contentValues.put("Returnman", temp[0]);
-                        contentValues.put("BorrowListID", temp[1]);
-                        contentValues.put("AssetID", temp[2]);
-                        contentValues.put("MaterielName", temp[3]);
-                        contentValues.put("MaterielKind", temp[4]);
-                        contentValues.put("ReturnNum", temp[5]);
-                        contentValues.put("DeptName", temp[6]);
-                        contentValues.put("Borrowman", temp[7]);
-                        contentValues.put("UserName", temp[8]);
-                        contentValues.put("EditDate", temp[9]);
-
-                        ContentValues contentValues1 = new ContentValues();
-                        contentValues1.put("State", 1);
-
-                        if (sqLiteDatabase.insertOrThrow("AssetReturnDetail", null, contentValues) != -1 &&
-                                sqLiteDatabase.update("AssetBorrowListDetail",contentValues1, "BorrowListID = ? and AssetID = ?" , new String[]{temp[1], temp[2]}) == 1) {
-                            listDetail.add(temp[1]);
-                            zcjy_change.add(temp[1]);
-                        }
-                    }
-                    sqLiteDatabase.setTransactionSuccessful();
-                    SetTableLayout(table_jieyong);
-                    ClearData();
-                    SetTableLayout(table_guihuan);
-                    ClearData();
-                    tiaoma.SetText("");
-                    bumen.SetText("");
-                    num_jieyong.SetText("");
-                    num_guihuan.getEdittext().setText("");
-                    guihuanren.SetText("");
-                    jieyongren.SetText("");
-                    SetValues("ZCGH", listDetail);
-                    addList("ZCGH");
-                    SetValues("ZCJY", zcjy_change);
-                    addList("ZCJY");
-                    ShowWarmMsgDialog("归还成功！");
-                } catch (Exception e) {
-                    ShowErrMsgDialog(e.getMessage());
-                } finally {
-                    sqLiteDatabase.endTransaction();
+                if(temp_guihuanlist.isEmpty()){
+                    ShowErrMsgDialog("请先添加归还资产！");
+                }else {
+                    SaveAssetReturnDetail();
                 }
             }
         });
+    }
+
+    private void SaveAssetReturnDetail() {
+        try {
+            sqLiteDatabase.beginTransaction();
+            for (String i : temp_guihuanlist) {
+                String[] temp = i.split("○");
+                ContentValues contentValues = new ContentValues();
+                contentValues.put("Returnman", temp[0]);
+                contentValues.put("BorrowListID", temp[1]);
+                contentValues.put("AssetID", temp[2]);
+                contentValues.put("MaterielName", temp[3]);
+                contentValues.put("MaterielKind", temp[4]);
+                contentValues.put("ReturnNum", temp[5]);
+                contentValues.put("DeptName", temp[6]);
+                contentValues.put("Borrowman", temp[7]);
+                contentValues.put("UserName", temp[9]);
+                contentValues.put("EditDate", temp[10]);
+
+                ContentValues contentValues1 = new ContentValues();
+                contentValues1.put("State", 1);
+
+                if (sqLiteDatabase.insertOrThrow("AssetReturnDetail", null, contentValues) != -1 &&
+                        sqLiteDatabase.update("AssetBorrowListDetail",contentValues1, "BorrowListID = ? and AssetID = ?" , new String[]{temp[1], temp[2]}) == 1) {
+                    zcgh_change.add(temp[1]);
+                    zcjy_change.add(temp[1]);
+                    change = true;
+                }
+            }
+            sqLiteDatabase.setTransactionSuccessful();
+            SetTableLayout(table_jieyong);
+            ClearData();
+            SetTableLayout(table_guihuan);
+            ClearData();
+            tiaoma.SetText("");
+            bumen.SetText("");
+            num_jieyong.SetText("");
+            num_guihuan.getEdittext().setText("");
+            guihuanren.SetText("");
+            jieyongren.SetText("");
+            ShowWarmMsgDialog("归还成功！");
+        } catch (Exception e) {
+            ShowErrMsgDialog(e.getMessage());
+        } finally {
+            sqLiteDatabase.endTransaction();
+        }
     }
 
     @Override
     public void initValues() {
         dbhelper = new MySQLiteOpenHelper(getBaseContext(), "temp_data.db", null, 1);
         sqLiteDatabase = dbhelper.getWritableDatabase();
-        listDetail = getSetValues("ZCGH");
-        listDetail = new HashSet<>();
-        zcjy_change = getSetValues("ZCJY");
-        zcjy_change = new HashSet<>();
+        zcgh_change = getSetValues("ZCGH");
+        zcgh_change = new HashSet<>(zcgh_change);
+        zcjy_change = getSetValues("AssetBorrowListDetail");
+        zcjy_change = new HashSet<>(zcjy_change);
     }
 
     @Override
     public void GetRequestResult(String data, int m) {
 
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (event.getRepeatCount() == 0) {
+            switch (keyCode) {
+                case 221:
+                case 220:
+                    Scanner.Read();
+                    break;
+                case 4:
+                    if(change){
+                        SetValues("ZCGH", zcgh_change);
+                        addList("ZCGH");
+                        SetValues("AssetBorrowListDetail", zcjy_change);
+                        addList("AssetBorrowListDetail");
+                    }
+                    finish();
+                    break;
+            }
+        }
+        return true;
     }
 
     @Override

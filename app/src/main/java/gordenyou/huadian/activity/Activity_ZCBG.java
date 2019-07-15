@@ -1,11 +1,11 @@
 package gordenyou.huadian.activity;
 
-import android.app.AlertDialog;
 import android.content.ContentValues;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.hardware.barcode.Scanner;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 
 import java.util.HashSet;
@@ -39,6 +39,10 @@ public class Activity_ZCBG extends BaseActivity {
     TextshowView bumen;
     @BindView(R.id.zcbg_quyu)
     TextshowView quyu;
+    @BindView(R.id.zcbg_zerenren)
+    TextshowView zerenren;
+    @BindView(R.id.zcbg_shiyongren)
+    TextshowView shiyongren;
 
     @BindView(R.id.zcbg_newzerenren)
     EdittextView newzerenren;
@@ -55,7 +59,8 @@ public class Activity_ZCBG extends BaseActivity {
 
     MySQLiteOpenHelper dbhelper;
     SQLiteDatabase sqLiteDatabase;
-    Set<String> list_change = new HashSet<>();
+    Set<String> list_change;
+    boolean change = false;
 
     @Override
     public void initViews(Bundle savedInstanceState) {
@@ -63,26 +68,22 @@ public class Activity_ZCBG extends BaseActivity {
         ButterKnife.bind(this);
     }
 
-
     @Override
     public void LogicMethod() {
         headerTitle.getRightbutton().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new AlertDialog.Builder(getBaseContext()).setTitle("提示信息").setMessage("确认变更？").setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
                         ContentValues con = new ContentValues();
                         con.put("newres",newzerenren.getText());
                         con.put("newowner",newshiyongren.getText());
                         con.put("newsn",newbianma.getText());
                         con.put("newremark",newbeizhu.getText());
-                        con.put("newfangjian",newfangjian.getText());
-                        con.put("newquyu",newquyu.getText());
-                        if(sqLiteDatabase.update("rMaterielInof", con,"mcode = ?" , new String[]{tiaoma.getText()}) == 1){
+                        con.put("newroom",newfangjian.getText());
+                        con.put("newarea",newquyu.getText());
+                        if(sqLiteDatabase.update("rMaterielInfo", con,"mcode = ?" , new String[]{tiaoma.getText()}) == 1){
                             ShowWarmMsgDialog("资产变更成功！");
                             list_change.add(tiaoma.getText());
-                            SetValues("ZCBG", list_change);
+                            change = true;
                             newzerenren.getEditText().setText("");
                             newshiyongren.getEditText().setText("");
                             newbianma.getEditText().setText("");
@@ -91,8 +92,6 @@ public class Activity_ZCBG extends BaseActivity {
                             newquyu.getEditText().setText("");
                         }
                     }
-                }).show();
-            }
         });
 
     }
@@ -102,12 +101,31 @@ public class Activity_ZCBG extends BaseActivity {
         dbhelper = new MySQLiteOpenHelper(getBaseContext(), "temp_data.db", null, 1);
         sqLiteDatabase = dbhelper.getWritableDatabase();
         list_change = getSetValues("ZCBG");
-        list_change = new HashSet<>();
+        list_change = new HashSet<>(list_change);
     }
 
     @Override
     public void GetRequestResult(String data, int m) {
 
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (event.getRepeatCount() == 0) {
+            switch (keyCode) {
+                case 221:
+                case 220:
+                    Scanner.Read();
+                    break;
+                case 4:
+                    if(change){
+                        SetValues("ZCBG", list_change);
+                        addList("ZCBG");
+                    }
+                    finish();
+                    break;
+            }
+        }
+        return true;
     }
 
     @Override
@@ -121,6 +139,8 @@ public class Activity_ZCBG extends BaseActivity {
             beizhu.SetText(cursor.getString(cursor.getColumnIndex("newremark")));
             bumen.SetText(cursor.getString(cursor.getColumnIndex("CostCenter")));
             quyu.SetText(cursor.getString(cursor.getColumnIndex("areaname")));
+            zerenren.SetText(cursor.getString(cursor.getColumnIndex("resman")));
+            shiyongren.SetText(cursor.getString(cursor.getColumnIndex("ownername")));
         }
         cursor.close();
     }
