@@ -1,10 +1,15 @@
 package gordenyou.huadian.activity;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.hardware.barcode.Scanner;
+import android.hardware.uhf.magic.reader;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 
@@ -61,11 +66,13 @@ public class Activity_ZCBG extends BaseActivity {
     SQLiteDatabase sqLiteDatabase;
     Set<String> list_change;
     boolean change = false;
+    private Handler readerHandler = new ReaderHandler();
 
     @Override
     public void initViews(Bundle savedInstanceState) {
         setContentView(R.layout.activity_zcbg);
         ButterKnife.bind(this);
+        reader.reg_handler(readerHandler);
     }
 
     @Override
@@ -105,6 +112,53 @@ public class Activity_ZCBG extends BaseActivity {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+
+        reader.StopLoop();
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        reader.StopLoop();
+    }
+
+    private class ReaderHandler extends Handler {
+        @SuppressLint("HandlerLeak")
+        @Override
+        public void handleMessage(Message msg) {
+            try {
+                if (msg.what == reader.msgreadepc) {
+                    ReaderEvent(msg.obj.toString());
+                    reader.Clean();
+                }
+                if (msg.what == reader.readover) {
+                    Log.e("test", "readerover");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void ReaderEvent(String epc) {
+        Cursor cursor = sqLiteDatabase.rawQuery("select * from rMaterielInfo where EPC = '" + epc + "'", null);
+        if(cursor.getCount() == 1){
+            while(cursor.moveToNext()){
+                tiaoma.SetText(cursor.getString(cursor.getColumnIndex("mcode")));
+                ScannerEvent();
+            }
+        }else{
+            ShowWarmMsgDialog("此RFID还未绑定资产！");
+        }
+        cursor.close();
+    }
+
+
+    @Override
     public void GetRequestResult(String data, int m) {
 
     }
@@ -113,6 +167,8 @@ public class Activity_ZCBG extends BaseActivity {
         if (event.getRepeatCount() == 0) {
             switch (keyCode) {
                 case 221:
+                    reader.InventoryLables();
+                    break;
                 case 220:
                     Scanner.Read();
                     break;

@@ -19,8 +19,8 @@
         android:layout_height="wrap_content"
         app:buttonvisable="false"
         app:scannerbuttonname="扫描"
-        app:scannerhint="请扫描条码"
-        app:scannertitle="扫描条码" />
+        app:scannerhint="请扫描条码/读取RFID"
+        app:scannertitle="资产编码" />
 
     <gordenyou.huadian.view.TextshowView
         android:id="@+id/zcbg_EPC"
